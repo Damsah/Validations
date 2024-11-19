@@ -1,0 +1,3164 @@
+ <html>
+ <head>
+ <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	 <meta name="version" content="1.0.0">
+    <title>Validation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .collapsible {
+            background-color: #f1f1f1;
+            color: #333;
+            cursor: pointer;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .active, .collapsible:hover {
+            background-color: #ccc;
+        }
+
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f9f9f9;
+            border-left: 2px solid #ccc;
+        }
+		
+		hr {
+            border: 0;
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
+		
+		
+		input[type="text"] {
+            text-transform: uppercase; 
+        }
+		.copy-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838;
+        }
+
+        .copy-btn:active {
+            background-color: #1e7e34;
+        }
+		
+    </style>
+</head>
+<body>
+
+  <footer style="text-align: center; margin-top: 20px; font-size: 0.9em; color: gray;">
+        Version <span id="versionNumber">1.0.0</span>
+    </footer>
+
+<form id="testForm">
+    <h2>Input Form</h2> 
+    <label for="currentTestID">Current TEST_ID:</label>
+    <input type="text" id="currentTestID" name="currentTestID" oninput="filterDbInstance()" required><br><br>
+
+    <label for="previousTestID">Previous TEST_ID:</label>
+    <input type="text" id="previousTestID" name="previousTestID" required><br><br>
+
+    <label for="dbInstance">DB_INSTANCE:</label>
+    <select id="dbInstance" name="dbInstance" required>
+        <option value="">--Select DB_INSTANCE--</option>
+        <option value="DEVBNCH">DEVBNCH</option>
+        <option value="TESTBNCH">TESTBNCH</option>
+        <option value="PRODBNCH">PRODBNCH</option>
+        <option value="CQRBNCH">CQRBNCH</option>
+        <option value="TESTCQR">TESTCQR</option>
+    </select>
+	
+
+    <button type="button" onclick="submitForm()">Submit</button>
+</form>
+
+<div id="collapsibleSections" style="display: none;">
+<h2>Validation Sections</h2>
+<button class="collapsible">1. CENAF</button>
+<div class="content">
+
+    <button class="collapsible">1.1. CENAF SETUP VALIDATION</button>
+    <div class="content">
+
+<button class="collapsible">1.1.1 CENAF Manual Setup Validation Queries</button>
+    <div id="content-cenaf-stp-m" class="content">
+        <button class="copy-btn" onclick="copyContent('content-cenaf-stp-m')">Copy</button>
+		<hr>
+    <pre>
+
+
+<!-- Section for the queries -->
+<section id="cenaf-setup-validation">
+  
+--REF_CENAF_CNFG_LKP - Union and Minus Queries
+
+  -- Union Query
+  
+ SELECT 
+  TEST_ID,DB_INSTANCE,APP_WALLET,MAX_THREADS,CHUNK_SIZE,LOG_PATH,SOURCE_SCHEMA,FILTERS,MAILING_LIST,
+  SOURCE_SCHEMA2,SOURCE_SCHEMA3,SOURCE_SCHEMA5,SOURCE_SCHEMA6,PRDT_SCHEMA,OIDFE_MSP,OIDFE_CURTAB,
+  RECENT_USPS_BMK,CURR_DSF_DATE,OPERATION,MAFCS_TARGET_TABLE,ABRAF_TARGET_TABLE,
+  ENUMAF_TARGET_TABLE,LUCAAF_TARGET_TABLE,PRESENT_ID_DSF,LATEST_DSF,DSF_YEARS,DS_MAFX_NAME,DS_MAFOP_NAME,GEO_BLK_COL_NAME,POST_CENSUS_DATE,COLLECTION_UNIT_VINTAGE
+FROM APUTILS.REF_CENAF_CNFG_LKP 
+where TEST_ID='<span id="currentTestIDValue1"></span>' AND DB_INSTANCE ='<span id="dbInstanceValue1"></span>'
+union
+ SELECT 
+  TEST_ID,DB_INSTANCE,APP_WALLET,MAX_THREADS,CHUNK_SIZE,LOG_PATH,SOURCE_SCHEMA,FILTERS,MAILING_LIST,
+  SOURCE_SCHEMA2,SOURCE_SCHEMA3,SOURCE_SCHEMA5,SOURCE_SCHEMA6,PRDT_SCHEMA,OIDFE_MSP,OIDFE_CURTAB,
+  RECENT_USPS_BMK,CURR_DSF_DATE,OPERATION,MAFCS_TARGET_TABLE,ABRAF_TARGET_TABLE,
+  ENUMAF_TARGET_TABLE,LUCAAF_TARGET_TABLE,PRESENT_ID_DSF,LATEST_DSF,DSF_YEARS,DS_MAFX_NAME,DS_MAFOP_NAME,GEO_BLK_COL_NAME,POST_CENSUS_DATE,COLLECTION_UNIT_VINTAGE
+FROM APUTILS.REF_CENAF_CNFG_LKP 
+where TEST_ID='<span id="previousTestIDValue1"></span>' AND DB_INSTANCE ='<span id="dbInstanceValue2"></span>';
+
+
+ -- Minus Query 1
+
+ SELECT 
+  /*TEST_ID,*/DB_INSTANCE,APP_WALLET,MAX_THREADS,CHUNK_SIZE,LOG_PATH/*,SOURCE_SCHEMA*/,FILTERS,MAILING_LIST,
+  SOURCE_SCHEMA2,SOURCE_SCHEMA3/*,SOURCE_SCHEMA5*/,SOURCE_SCHEMA6,PRDT_SCHEMA,OIDFE_MSP,/*OIDFE_CURTAB,*/
+  /*RECENT_USPS_BMK,CURR_DSF_DATE,OPERATION,*/MAFCS_TARGET_TABLE,ABRAF_TARGET_TABLE,
+  ENUMAF_TARGET_TABLE,LUCAAF_TARGET_TABLE/*,PRESENT_ID_DSF,LATEST_DSF,DSF_YEARS*/,DS_MAFX_NAME,
+  DS_MAFOP_NAME,GEO_BLK_COL_NAME,POST_CENSUS_DATE,COLLECTION_UNIT_VINTAGE
+FROM APUTILS.REF_CENAF_CNFG_LKP 
+where TEST_ID='<span id="currentTestIDValue2"></span>' AND DB_INSTANCE ='<span id="dbInstanceValue3"></span>'
+MINUS
+ SELECT 
+  /*TEST_ID,*/DB_INSTANCE,APP_WALLET,MAX_THREADS,CHUNK_SIZE,LOG_PATH/*,SOURCE_SCHEMA*/,FILTERS,MAILING_LIST,
+  SOURCE_SCHEMA2,SOURCE_SCHEMA3/*,SOURCE_SCHEMA5*/,SOURCE_SCHEMA6,PRDT_SCHEMA,OIDFE_MSP,/*OIDFE_CURTAB,*/
+  /*RECENT_USPS_BMK,CURR_DSF_DATE,OPERATION,*/MAFCS_TARGET_TABLE,ABRAF_TARGET_TABLE,
+  ENUMAF_TARGET_TABLE,LUCAAF_TARGET_TABLE/*,PRESENT_ID_DSF,LATEST_DSF,DSF_YEARS*/,DS_MAFX_NAME,
+  DS_MAFOP_NAME,GEO_BLK_COL_NAME,POST_CENSUS_DATE,COLLECTION_UNIT_VINTAGE
+FROM APUTILS.REF_CENAF_CNFG_LKP 
+where TEST_ID='<span id="previousTestIDValue2"></span>' AND DB_INSTANCE ='<span id="dbInstanceValue4"></span>';
+
+ -- Minus Query 2
+
+ SELECT 
+  /*TEST_ID,*/DB_INSTANCE,APP_WALLET,MAX_THREADS,CHUNK_SIZE,LOG_PATH/*,SOURCE_SCHEMA*/,FILTERS,MAILING_LIST,
+  SOURCE_SCHEMA2,SOURCE_SCHEMA3/*,SOURCE_SCHEMA5*/,SOURCE_SCHEMA6,PRDT_SCHEMA,OIDFE_MSP,/*OIDFE_CURTAB,*/
+  /*RECENT_USPS_BMK,CURR_DSF_DATE,OPERATION,*/MAFCS_TARGET_TABLE,ABRAF_TARGET_TABLE,
+  ENUMAF_TARGET_TABLE,LUCAAF_TARGET_TABLE/*,PRESENT_ID_DSF,LATEST_DSF,DSF_YEARS*/,DS_MAFX_NAME,
+  DS_MAFOP_NAME,GEO_BLK_COL_NAME,POST_CENSUS_DATE,COLLECTION_UNIT_VINTAGE
+FROM APUTILS.REF_CENAF_CNFG_LKP 
+where TEST_ID='<span id="previousTestIDValue3"></span>' AND DB_INSTANCE ='<span id="dbInstanceValue5"></span>'
+MINUS
+ SELECT 
+  /*TEST_ID,*/DB_INSTANCE,APP_WALLET,MAX_THREADS,CHUNK_SIZE,LOG_PATH/*,SOURCE_SCHEMA*/,FILTERS,MAILING_LIST,
+  SOURCE_SCHEMA2,SOURCE_SCHEMA3/*,SOURCE_SCHEMA5*/,SOURCE_SCHEMA6,PRDT_SCHEMA,OIDFE_MSP,/*OIDFE_CURTAB,*/
+  /*RECENT_USPS_BMK,CURR_DSF_DATE,OPERATION,*/MAFCS_TARGET_TABLE,ABRAF_TARGET_TABLE,
+  ENUMAF_TARGET_TABLE,LUCAAF_TARGET_TABLE/*,PRESENT_ID_DSF,LATEST_DSF,DSF_YEARS*/,DS_MAFX_NAME,
+  DS_MAFOP_NAME,GEO_BLK_COL_NAME,POST_CENSUS_DATE,COLLECTION_UNIT_VINTAGE
+FROM APUTILS.REF_CENAF_CNFG_LKP 
+where TEST_ID='<span id="currentTestIDValue3"></span>' AND DB_INSTANCE ='<span id="dbInstanceValue6"></span>';
+<hr>
+--REF_CENAF_SCRPTS_CNFG_LKP - Union and Minus Queries
+
+  -- Union Query
+
+  SELECT 
+     TEST_ID,DB_INSTANCE,APP_WALLET,LOGIN_WALLET,PDB_LOGIN_WALLET,
+    FPARAM_PRVS_TEST_ID,CNF_SRC_DIR,CNF_SRC_DPLMT_DIR,CNF_LOG_DIR
+  FROM APUTILS.REF_CENAF_SCRPTS_CNFG_LKP 
+  where TEST_ID='<span id="currentTestIDValue4"></span>' AND DB_INSTANCE ='<span id="dbInstanceValue7"></span>'
+  union
+    SELECT 
+     TEST_ID,DB_INSTANCE,APP_WALLET,LOGIN_WALLET,PDB_LOGIN_WALLET,
+    FPARAM_PRVS_TEST_ID,CNF_SRC_DIR,CNF_SRC_DPLMT_DIR,CNF_LOG_DIR
+  FROM APUTILS.REF_CENAF_SCRPTS_CNFG_LKP 
+  where TEST_ID='<span id="previousTestIDValue4"></span>' AND DB_INSTANCE ='<span id="dbInstanceValue8"></span>';
+
+ -- Minus Query 1
+
+  SELECT 
+     /*TEST_ID,*/DB_INSTANCE,APP_WALLET,LOGIN_WALLET,PDB_LOGIN_WALLET,
+    /*FPARAM_PRVS_TEST_ID,*/CNF_SRC_DIR,CNF_SRC_DPLMT_DIR,CNF_LOG_DIR
+  FROM APUTILS.REF_CENAF_SCRPTS_CNFG_LKP 
+  where TEST_ID='<span id="currentTestIDValue5"></span>' AND DB_INSTANCE = '<span id="dbInstanceValue9"></span>'
+  MINUS
+    SELECT 
+     /*TEST_ID,*/DB_INSTANCE,APP_WALLET,LOGIN_WALLET,PDB_LOGIN_WALLET,
+    /*FPARAM_PRVS_TEST_ID,*/CNF_SRC_DIR,CNF_SRC_DPLMT_DIR,CNF_LOG_DIR
+  FROM APUTILS.REF_CENAF_SCRPTS_CNFG_LKP 
+  where TEST_ID='<span id="previousTestIDValue5"></span>' AND DB_INSTANCE = '<span id="dbInstanceValue10"></span>';
+  
+ -- Minus Query 2
+
+  SELECT 
+     /*TEST_ID,*/DB_INSTANCE,APP_WALLET,LOGIN_WALLET,PDB_LOGIN_WALLET,
+    /*FPARAM_PRVS_TEST_ID,*/CNF_SRC_DIR,CNF_SRC_DPLMT_DIR,CNF_LOG_DIR
+  FROM APUTILS.REF_CENAF_SCRPTS_CNFG_LKP 
+  where TEST_ID='<span id="previousTestIDValue6"></span>' AND DB_INSTANCE = '<span id="dbInstanceValue11"></span>'
+  MINUS
+    SELECT 
+     /*TEST_ID,*/DB_INSTANCE,APP_WALLET,LOGIN_WALLET,PDB_LOGIN_WALLET,
+    /*FPARAM_PRVS_TEST_ID,*/CNF_SRC_DIR,CNF_SRC_DPLMT_DIR,CNF_LOG_DIR
+  FROM APUTILS.REF_CENAF_SCRPTS_CNFG_LKP 
+  where TEST_ID='<span id="currentTestIDValue6"></span>' AND DB_INSTANCE = '<span id="dbInstanceValue12"></span>';
+<hr>
+
+--CENAF_SCRIPTS_CONFIG - Union and Minus Queries
+
+SELECT TEST_ID, DB_INSTANCE, PROCESS_STEP, PROCESS_SEQUENCE, 
+      APP_WALLET, LOGIN_WALLET, FILE_NAME, FILE_PARAMETER_LIST, 
+	  SRC_DIR, LOG_DIR
+FROM CENAF.CENAF_SCRIPTS_CONFIG
+WHERE TEST_ID='<span id="currentTestIDValue7"></span>' and DB_INSTANCE='<span id="dbInstanceValue13"></span>';
+<hr>
+--CENAF_DRIVER_CONFIG - Union and Minus Queries
+
+  -- Union Query
+
+SELECT 
+  TEST_ID,
+  APP_WALLET,MAX_THREADS,
+  CHUNK_SIZE,LOG_PATH,
+  SOURCE_SCHEMA,
+  FILTERS,
+  MAILING_LIST
+FROM CENAF.CENAF_DRIVER_CONFIG 
+WHERE TEST_ID='<span id="currentTestIDValue8"></span>' and APP_WALLET='CENAF_<span id="dbInstanceValue14"></span>'
+union
+SELECT 
+  TEST_ID,
+  APP_WALLET,MAX_THREADS,
+  CHUNK_SIZE,LOG_PATH,
+  SOURCE_SCHEMA,
+  FILTERS,
+  MAILING_LIST
+FROM CENAF.CENAF_DRIVER_CONFIG 
+WHERE TEST_ID='<span id="previousTestIDValue7"></span>' and APP_WALLET='CENAF_<span id="dbInstanceValue15"></span>';
+
+ -- Minus Query 1
+
+SELECT 
+  /*TEST_ID,*/
+  APP_WALLET,MAX_THREADS,
+  CHUNK_SIZE,LOG_PATH,
+  /*SOURCE_SCHEMA,*/
+  FILTERS,
+  MAILING_LIST
+FROM CENAF.CENAF_DRIVER_CONFIG 
+WHERE TEST_ID='<span id="currentTestIDValue9"></span>' and APP_WALLET='CENAF_<span id="dbInstanceValue16"></span>'
+minus
+SELECT 
+  /*TEST_ID,*/
+  APP_WALLET,MAX_THREADS,
+  CHUNK_SIZE,LOG_PATH,
+  /*SOURCE_SCHEMA,*/
+  FILTERS,
+  MAILING_LIST
+FROM CENAF.CENAF_DRIVER_CONFIG 
+WHERE TEST_ID='<span id="previousTestIDValue8"></span>' and APP_WALLET='CENAF_<span id="dbInstanceValue17"></span>';
+
+ -- Minus Query 2
+
+SELECT 
+  /*TEST_ID,*/
+  APP_WALLET,MAX_THREADS,
+  CHUNK_SIZE,LOG_PATH,
+  /*SOURCE_SCHEMA,*/
+  FILTERS,
+  MAILING_LIST
+FROM CENAF.CENAF_DRIVER_CONFIG 
+WHERE TEST_ID='<span id="previousTestIDValue9"></span>' and APP_WALLET='CENAF_<span id="dbInstanceValue18"></span>'
+minus
+SELECT 
+  /*TEST_ID,*/
+  APP_WALLET,MAX_THREADS,
+  CHUNK_SIZE,LOG_PATH,
+  /*SOURCE_SCHEMA,*/
+  FILTERS,
+  MAILING_LIST
+FROM CENAF.CENAF_DRIVER_CONFIG 
+WHERE TEST_ID='<span id="currentTestIDValue10"></span>' and APP_WALLET='CENAF_<span id="dbInstanceValue19"></span>';
+<hr>
+--CENAF_LOADER_CONFIG_TBL - Union and Minus Queries
+
+  -- Union Query
+
+SELECT 
+  TEST_ID,
+  APP_WALLET,APP_SCHEMA,DB_INSTANCE,
+  OPERATION,SOURCE_SCHEMA,
+  SOURCE_SCHEMA2,SOURCE_SCHEMA3,SOURCE_SCHEMA4,
+  SOURCE_SCHEMA5,
+  SOURCE_SCHEMA6,PRDT_SCHEMA,OIDFE_MSP,
+  OIDFE_CURTAB,
+  COLLECTION_UNIT_VINTAGE
+  ,RECENT_USPS_BMK, CURR_DSF_DATE
+FROM CENAF.CENAF_LOADER_CONFIG_TBL
+WHERE TEST_ID='<span id="currentTestIDValue11"></span>' and APP_WALLET='CENAF_<span id="dbInstanceValue20"></span>'
+union
+SELECT 
+  TEST_ID,
+  APP_WALLET,APP_SCHEMA,DB_INSTANCE,
+  OPERATION,SOURCE_SCHEMA,
+  SOURCE_SCHEMA2,SOURCE_SCHEMA3,SOURCE_SCHEMA4,
+  SOURCE_SCHEMA5,
+  SOURCE_SCHEMA6,PRDT_SCHEMA,OIDFE_MSP,
+  OIDFE_CURTAB,
+  COLLECTION_UNIT_VINTAGE
+  ,RECENT_USPS_BMK, CURR_DSF_DATE
+FROM CENAF.CENAF_LOADER_CONFIG_TBL 
+WHERE TEST_ID='<span id="previousTestIDValue10"></span>' and APP_WALLET='CENAF_<span id="dbInstanceValue21"></span>';
+
+ -- Minus Query 1
+
+SELECT 
+  /*TEST_ID,*/
+  APP_WALLET,APP_SCHEMA,DB_INSTANCE,
+  /*OPERATION,SOURCE_SCHEMA,*/
+  SOURCE_SCHEMA2,SOURCE_SCHEMA3,SOURCE_SCHEMA4,
+  /*SOURCE_SCHEMA5,*/
+  /*SOURCE_SCHEMA6,*/PRDT_SCHEMA,OIDFE_MSP,
+  /*OIDFE_CURTAB,*/
+  COLLECTION_UNIT_VINTAGE
+  /*,RECENT_USPS_BMK, CURR_DSF_DATE*/
+FROM CENAF.CENAF_LOADER_CONFIG_TBL
+WHERE TEST_ID='<span id="currentTestIDValue12"></span>' and APP_WALLET='CENAF_<span id="dbInstanceValue22"></span>'
+minus
+SELECT 
+  /*TEST_ID,*/
+  APP_WALLET,APP_SCHEMA,DB_INSTANCE,
+  /*OPERATION,SOURCE_SCHEMA,*/
+  SOURCE_SCHEMA2,SOURCE_SCHEMA3,SOURCE_SCHEMA4,
+  /*SOURCE_SCHEMA5,*/
+  /*SOURCE_SCHEMA6,*/PRDT_SCHEMA,OIDFE_MSP,
+  /*OIDFE_CURTAB,*/
+  COLLECTION_UNIT_VINTAGE
+  /*,RECENT_USPS_BMK, CURR_DSF_DATE*/
+FROM CENAF.CENAF_LOADER_CONFIG_TBL 
+WHERE TEST_ID='<span id="previousTestIDValue11"></span>' and APP_WALLET='CENAF_<span id="dbInstanceValue23"></span>';
+
+ -- Minus Query 2
+
+SELECT 
+  /*TEST_ID,*/
+  APP_WALLET,APP_SCHEMA,DB_INSTANCE,
+  /*OPERATION,SOURCE_SCHEMA,*/
+  SOURCE_SCHEMA2,SOURCE_SCHEMA3,SOURCE_SCHEMA4,
+  /*SOURCE_SCHEMA5,*/
+  /*SOURCE_SCHEMA6,*/PRDT_SCHEMA,OIDFE_MSP,
+  /*OIDFE_CURTAB,*/
+  COLLECTION_UNIT_VINTAGE
+  /*,RECENT_USPS_BMK, CURR_DSF_DATE*/
+FROM CENAF.CENAF_LOADER_CONFIG_TBL 
+WHERE TEST_ID='<span id="previousTestIDValue12"></span>' and APP_WALLET='CENAF_<span id="dbInstanceValue24"></span>'
+minus
+SELECT 
+  /*TEST_ID,*/
+  APP_WALLET,APP_SCHEMA,DB_INSTANCE,
+  /*OPERATION,SOURCE_SCHEMA,*/
+  SOURCE_SCHEMA2,SOURCE_SCHEMA3,SOURCE_SCHEMA4,
+  /*SOURCE_SCHEMA5,*/
+  /*SOURCE_SCHEMA6,*/PRDT_SCHEMA,OIDFE_MSP,
+  /*OIDFE_CURTAB,*/
+  COLLECTION_UNIT_VINTAGE
+  /*,RECENT_USPS_BMK, CURR_DSF_DATE*/
+FROM CENAF.CENAF_LOADER_CONFIG_TBL
+WHERE TEST_ID='<span id="currentTestIDValue13"></span>' and APP_WALLET='CENAF_<span id="dbInstanceValue31"></span>';
+<hr>
+
+--CENAF_APPS_CONFIG_TBL - Union and Minus Queries
+
+  -- Union Query
+
+SELECT 
+  TEST_ID,
+  APP_WALLET,APP_SCHEMA,DB_INSTANCE,
+  DS_MAFX_NAME,DS_MAFOP_NAME,
+  DS_BENCHMARK,DS_LAST_DSF,
+  GEO_BLK_COL_NAME,POST_CENSUS_DATE,OPERATION
+FROM CENAF.CENAF_APPS_CONFIG_TBL 
+WHERE TEST_ID='<span id="currentTestIDValue14"></span>' and DB_INSTANCE='<span id="dbInstanceValue25"></span>'
+union
+SELECT 
+  TEST_ID,
+  APP_WALLET,APP_SCHEMA,DB_INSTANCE,
+  DS_MAFX_NAME,DS_MAFOP_NAME,
+  DS_BENCHMARK,DS_LAST_DSF,
+  GEO_BLK_COL_NAME,POST_CENSUS_DATE,OPERATION
+FROM CENAF.CENAF_APPS_CONFIG_TBL
+WHERE TEST_ID='<span id="previousTestIDValue13"></span>' and DB_INSTANCE='<span id="dbInstanceValue26"></span>';
+
+ -- Minus Query 1
+
+SELECT 
+  /*TEST_ID,*/
+  APP_WALLET,APP_SCHEMA,DB_INSTANCE,
+  DS_MAFX_NAME,DS_MAFOP_NAME,
+  /*DS_BENCHMARK,DS_LAST_DSF,*/
+  GEO_BLK_COL_NAME,POST_CENSUS_DATE/*,OPERATION*/
+FROM CENAF.CENAF_APPS_CONFIG_TBL 
+WHERE TEST_ID='<span id="currentTestIDValue15"></span>' and DB_INSTANCE='<span id="dbInstanceValue27"></span>'
+minus
+SELECT 
+  /*TEST_ID,*/
+  APP_WALLET,APP_SCHEMA,DB_INSTANCE,
+  DS_MAFX_NAME,DS_MAFOP_NAME,
+  /*DS_BENCHMARK,DS_LAST_DSF,*/
+  GEO_BLK_COL_NAME,POST_CENSUS_DATE/*,OPERATION*/
+FROM CENAF.CENAF_APPS_CONFIG_TBL
+WHERE TEST_ID='<span id="previousTestIDValue14"></span>' and DB_INSTANCE='<span id="dbInstanceValue28"></span>';
+
+ -- Minus Query 2
+
+SELECT 
+  /*TEST_ID,*/
+  APP_WALLET,APP_SCHEMA,DB_INSTANCE,
+  DS_MAFX_NAME,DS_MAFOP_NAME,
+  /*DS_BENCHMARK,DS_LAST_DSF,*/
+  GEO_BLK_COL_NAME,POST_CENSUS_DATE/*,OPERATION*/
+FROM CENAF.CENAF_APPS_CONFIG_TBL
+WHERE TEST_ID='<span id="previousTestIDValue15"></span>' and DB_INSTANCE='<span id="dbInstanceValue29"></span>'
+minus
+SELECT 
+  /*TEST_ID,*/
+  APP_WALLET,APP_SCHEMA,DB_INSTANCE,
+  DS_MAFX_NAME,DS_MAFOP_NAME,
+  /*DS_BENCHMARK,DS_LAST_DSF,*/
+  GEO_BLK_COL_NAME,POST_CENSUS_DATE/*,OPERATION*/
+FROM CENAF.CENAF_APPS_CONFIG_TBL 
+WHERE TEST_ID='<span id="currentTestIDValue16"></span>' and DB_INSTANCE='<span id="dbInstanceValue30"></span>';
+<hr>
+
+--CENAF_APPS_COLS_LU - Union and Minus Queries
+
+  -- Union Query
+
+select * from (SELECT 
+ TEST_ID,
+  APP_TYPE,
+  TARGET_TABLE,
+  to_char(FIELDS_LIST)
+FROM CENAF.CENAF_APPS_COLS_LU 
+WHERE TEST_ID='<span id="currentTestIDValue17"></span>'
+union
+SELECT 
+ TEST_ID,
+  APP_TYPE,
+  TARGET_TABLE,
+  to_char(FIELDS_LIST)
+FROM CENAF.CENAF_APPS_COLS_LU 
+WHERE TEST_ID='<span id="previousTestIDValue16"></span>') order by APP_TYPE,rownum;
+
+ -- Minus Query 1
+
+SELECT 
+ /*TEST_ID,*/
+  APP_TYPE,
+  TARGET_TABLE,
+  to_char(FIELDS_LIST)
+FROM CENAF.CENAF_APPS_COLS_LU 
+WHERE TEST_ID='<span id="currentTestIDValue18"></span>'
+minus
+SELECT 
+ /*TEST_ID,*/
+  APP_TYPE,
+  TARGET_TABLE,
+  to_char(FIELDS_LIST)
+FROM CENAF.CENAF_APPS_COLS_LU 
+WHERE TEST_ID='<span id="previousTestIDValue17"></span>';
+
+ -- Minus Query 2
+
+SELECT 
+ /*TEST_ID,*/
+  APP_TYPE,
+  TARGET_TABLE,
+  to_char(FIELDS_LIST)
+FROM CENAF.CENAF_APPS_COLS_LU 
+WHERE TEST_ID='<span id="previousTestIDValue18"></span>'
+minus
+SELECT 
+ /*TEST_ID,*/
+  APP_TYPE,
+  TARGET_TABLE,
+  to_char(FIELDS_LIST)
+FROM CENAF.CENAF_APPS_COLS_LU 
+WHERE TEST_ID='<span id="currentTestIDValue19"></span>';
+<hr>
+--REF_COMPONENTS - Union and Minus Queries
+
+SELECT column_name, dsf_months, dsf_years, dsf_month_year, populate_flag, dsf_values
+  FROM cenaf.ref_components
+ WHERE component_name IN ('DSF', 'PDMAFX');
+ 
+
+SELECT column_name, dsf_months, dsf_years, dsf_month_year, populate_flag, dsf_values
+  FROM cenaf.ref_components
+ WHERE component_name IN ('DSF', 'PDMAFX')
+MINUS
+SELECT column_name, dsf_months, dsf_years, dsf_month_year, populate_flag, dsf_values
+  FROM pdmaf_view.ref_components
+ WHERE component_name IN ('ADSDSF', 'PDBPDMAFX');
+ 
+ SELECT column_name, dsf_months, dsf_years, dsf_month_year, populate_flag, dsf_values
+  FROM pdmaf_view.ref_components
+ WHERE component_name IN ('ADSDSF', 'PDBPDMAFX')
+MINUS
+SELECT column_name, dsf_months, dsf_years, dsf_month_year, populate_flag, dsf_values
+  FROM cenaf.ref_components
+ WHERE component_name IN ('DSF', 'PDMAFX');
+</section>
+
+    </pre>
+</div>
+       <button class="collapsible">1.1.2. CENAF AUTO SETUP VALIDATION</button>
+		    <div id="content-cenaf-stp-a" class="content">
+        <button class="copy-btn" onclick="copyContent('content-cenaf-stp-a')">Copy</button>
+		<hr>
+        <pre>
+		1. Ref CENAF Auto Validation
+		
+		@C:\test\REF_Validation_auto.sql CENAF <span id="currentTestIDValue20"></span> <span id="previousTestIDValue19"></span> <span id="dbInstanceValue32"></span>
+		
+		Output File : C:\test\REF_Validation_auto_output.txt
+		<hr>
+		2. CENAF Setup Auto Validation
+		
+		@C:\test\CENAF_Validation_auto_script.sql <span id="currentTestIDValue21"></span> <span id="dbInstanceValue33"></span> SETUP <span id="previousTestIDValue20"></span>
+		
+		Output File : C:\test\CENAF_Validation_auto_output.txt
+		</pre>
+        </div>
+		
+		
+</div>
+
+ <button class="collapsible">1.2. CENAF RUN VALIDATION</button>
+    <div class="content">
+        <button class="collapsible">1.2.1. CENAF MANUAL RUN VALIDATION</button>
+		<div id="content-cenaf-run-m" class="content">
+        <button class="copy-btn" onclick="copyContent('content-cenaf-run-m')">Copy</button>
+		<hr>
+            <pre>
+			<section id="cenaf-run-validation">
+			
+-- Check Final Data 
+
+
+-- RT_MAFX.MAFX
+
+
+SELECT count(*) FROM RT_MAFX.MAFX where TEST_ID='<span id="currentTestIDValue22"></span>';
+
+<hr>
+-- RT_MAFX.MAFOP
+
+SELECT count(*) FROM RT_MAFX.MAFOP 
+WHERE  TEST_ID='<span id="currentTestIDValue23"></span>';
+
+<hr>
+--========================================================--
+-- Total rows in MAFUNIT table for all entities
+--========================================================--
+SELECT /*+ PARALLEL (32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM <span id="schemaResultValue"></span>.mafunit
+ WHERE NVL(mtfcc, 'XXXXX') <> 'U2100';                               --  # Rows
+ --========================================================--
+-- Total rows in MAFUNIT table for spacific entity
+--========================================================--
+SELECT /*+ PARALLEL (32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM <span id="schemaResultValue2"></span>.mafunit
+ WHERE NVL(mtfcc, 'XXXXX') <> 'U2100' AND STATEFP IN ('02') AND COUNTYFP IN ('068');  --  # Rows
+--========================================================--
+-- Total rows in MAFX table
+--========================================================--
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.mafx
+ WHERE NVL(mtfcc, 'XXXXX') <> 'U2100'
+   AND test_id = '<span id="currentTestIDValue24"></span>';         --  # Rows
+--========================================================--
+-- CENSUSAF = 1
+-- HUs    Must meet A, B, C, and one of D, E, F, G, H, or I
+--========================================================--
+-- Total rows with CENSUSAF = 1 for HUs
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.mafcs_filter_flag ff,
+       rt_mafx.mafx              mx
+ WHERE mx.mafid    = ff.mafid
+   AND mx.gqhuflag = '0' AND mx.resstat = '1'                        -- HUs
+   AND ff.censusaf = '1'
+   AND mx.test_id  = '<span id="currentTestIDValue25"></span>'
+   AND mx.test_id  = ff.test_id;                                     -- # Rows
+------------------------------------------------------------
+-- Total rows that match the conditions (Filter Criterias)
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.mafcs_filter_flag ff,
+       rt_mafx.mafx              mx
+ WHERE ff.filtera = 'P'
+   AND ff.filterb = 'P'
+   AND ff.filterc = 'P'
+   AND(    ff.filterd = 'P'
+        OR ff.filtere = 'P'
+        OR ff.filterf = 'P'
+        OR ff.filterg = 'P'
+        OR ff.filterh = 'P'
+        OR ff.filteri = 'P')
+   AND mx.gqhuflag = '0' AND mx.resstat = '1'                        -- HUs
+   AND mx.mafid    = ff.mafid
+   AND ff.test_id  = '<span id="currentTestIDValue26"></span>'
+   AND mx.test_id  = ff.test_id;                                     -- # Rows
+------------------------------------------------------------
+-- Total rows that match conditions but with CENSUSAF <> 1
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.mafcs_filter_flag ff,
+       rt_mafx.mafx              mx
+ WHERE ff.filtera = 'P'
+   AND ff.filterb = 'P'
+   AND ff.filterc = 'P'
+   AND(    ff.filterd = 'P'
+        OR ff.filtere = 'P'
+        OR ff.filterf = 'P'
+        OR ff.filterg = 'P'
+        OR ff.filterh = 'P'
+        OR ff.filteri = 'P')
+   AND mx.gqhuflag = '0' AND mx.resstat = '1'                        -- HUs
+   AND mx.mafid    = ff.mafid
+   AND ff.test_id  = '<span id="currentTestIDValue27"></span>'
+   AND mx.test_id  = ff.test_id
+   AND NVL(ff.censusaf, 'XX') <> '1';                                -- No Rows
+--========================================================--
+-- CENSUSAF = 1
+-- GQs    Must meet A, B, C, and one of D, E, J, or K
+--========================================================--
+-- Total rows with CENSUSAF = 1 for GQs
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.mafcs_filter_flag ff,
+       rt_mafx.mafx              mx
+ WHERE mx.mafid    = ff.mafid
+   AND mx.gqhuflag = '2'                                             -- GQs
+   AND ff.censusaf = '1'
+   AND ff.test_id  = '<span id="currentTestIDValue28"></span>'
+   AND mx.test_id  = ff.test_id;                                     -- # Rows
+------------------------------------------------------------
+-- Total rows that match the conditions (Filter Criterias)
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.mafcs_filter_flag ff,
+       rt_mafx.mafx              mx
+ WHERE ff.filtera = 'P'
+   AND ff.filterb = 'P'
+   AND ff.filterc = 'P'
+   AND(    ff.filterd = 'P'
+        OR ff.filtere = 'P'
+        OR ff.filterj = 'P'
+        OR ff.filterk = 'P')
+   AND mx.gqhuflag  = '2'                                            -- GQs
+   AND mx.mafid     = ff.mafid
+   AND ff.test_id   = '<span id="currentTestIDValue29"></span>'
+   AND mx.test_id   = ff.test_id;                                    -- # Rows
+------------------------------------------------------------
+-- Total rows that match conditions but with CENSUSAF <> 1
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.mafcs_filter_flag ff,
+       rt_mafx.mafx              mx
+ WHERE ff.filtera = 'P'
+   AND ff.filterb = 'P'
+   AND ff.filterc = 'P'
+   AND(    ff.filterd = 'P'
+        OR ff.filtere = 'P'
+        OR ff.filterj = 'P'
+        OR ff.filterk = 'P')
+   AND mx.gqhuflag            =  '2'                                 -- GQs
+   AND mx.mafid               =  ff.mafid
+   AND NVL(ff.censusaf, 'XX') <> '1'
+   AND ff.test_id = '<span id="currentTestIDValue30"></span>'
+   AND mx.test_id = ff.test_id;                                      -- No Rows
+--========================================================--
+-- CENSUSAF = 0
+-- TU, TL, Nonres Set CENSUSAF = 0
+--========================================================--
+-- Total rows with CENSUSAF = 0 for TUs, TLs, Nonres
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.mafcs_filter_flag ff,
+       rt_mafx.mafx              mx
+ WHERE mx.mafid    = ff.mafid
+   AND ((    mx.gqhuflag             = '4' AND mx.resstat = '1'      -- TUs
+          OR mx.gqhuflag             = '5' AND mx.resstat = '1'      -- TLs
+          OR NVL(mx.gqhuflag, 'XX') <> '2' AND mx.resstat = '2'))    -- Non Residentials
+   AND ff.censusaf = '0'
+   AND ff.test_id  = '<span id="currentTestIDValue31"></span>'
+   AND mx.test_id  = ff.test_id;                                     -- # Rows
+------------------------------------------------------------
+-- Total rows that match conditions (Filter Criteria)
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.mafcs_filter_flag ff,
+       rt_mafx.mafx              mx
+ WHERE mx.mafid   = ff.mafid
+   AND ((    mx.gqhuflag             = '4' AND mx.resstat = '1'      -- TUs
+          OR mx.gqhuflag             = '5' AND mx.resstat = '1'      -- TLs
+          OR NVL(mx.gqhuflag, 'XX') <> '2' AND mx.resstat = '2'))    -- Non Residentials
+   AND ff.test_id = '<span id="currentTestIDValue32"></span>'
+   AND mx.test_id = ff.test_id;                                      -- # Rows
+------------------------------------------------------------
+-- Total rows that match conditions but with CENSUSAF <> 0
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.mafcs_filter_flag ff,
+       rt_mafx.mafx              mx
+ WHERE mx.mafid = ff.mafid
+   AND ((    mx.gqhuflag             = '4' AND mx.resstat = '1'      -- TUs
+          OR mx.gqhuflag             = '5' AND mx.resstat = '1'      -- TLs
+          OR NVL(mx.gqhuflag, 'XX') <> '2' AND mx.resstat = '2'))    -- Non Residentials
+   AND NVL(ff.censusaf, 'XX') <> '0'
+   AND ff.test_id = '<span id="currentTestIDValue33"></span>'
+   AND mx.test_id = ff.test_id;                                      -- No Rows
+--========================================================--
+-- ENUMAF = 1
+-- HUs    Must meet A, B, C, and one of D, E, F, G, H, or I
+--========================================================--
+-- Total rows with ENUMAF = 1 for HUs
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.enumaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE mx.mafid    = ff.mafid
+   AND mx.gqhuflag = '0' AND mx.resstat = '1'                        -- HUs
+   AND ff.enumaf   = '1'
+   AND ff.test_id  = '<span id="currentTestIDValue34"></span>'
+   AND mx.test_id  = ff.test_id;                                     -- # Rows
+------------------------------------------------------------
+-- Total rows that match the conditions (Filter Criterias)
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.enumaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE ff.filtera = 'P'
+   AND ff.filterb = 'P'
+   AND ff.filterc = 'P'
+   AND(    ff.filterd = 'P'
+        OR ff.filtere = 'P'
+        OR ff.filterf = 'P'
+        OR ff.filterg = 'P'
+        OR ff.filterh = 'P'
+        OR ff.filteri = 'P')
+   AND mx.gqhuflag = '0' AND mx.resstat = '1'                        -- HUs
+   AND mx.mafid    = ff.mafid
+   AND ff.test_id  = '<span id="currentTestIDValue35"></span>'
+   AND mx.test_id  = ff.test_id;                                     -- # Rows
+------------------------------------------------------------
+-- Total rows that match the conditions but with enumaf <> 1
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.enumaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE ff.filtera = 'P'
+   AND ff.filterb = 'P'
+   AND ff.filterc = 'P'
+   AND(    ff.filterd = 'P'
+        OR ff.filtere = 'P'
+        OR ff.filterf = 'P'
+        OR ff.filterg = 'P'
+        OR ff.filterh = 'P'
+        OR ff.filteri = 'P')
+   AND mx.gqhuflag = '0' AND mx.resstat = '1'                        -- HUs
+   AND mx.mafid    = ff.mafid
+   AND ff.test_id  = '<span id="currentTestIDValue36"></span>'
+   AND mx.test_id  = ff.test_id
+   AND NVL(ff.enumaf, 'XX') <> '1';                                  -- No Rows
+--========================================================--
+-- ENUMAF = 1
+-- GQs    Must meet A, B, C, and one of D, E, J, or K
+--========================================================--
+-- Total rows with ENUMAF = 1 for GQs
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.enumaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE mx.mafid    = ff.mafid
+   AND mx.gqhuflag = '2'                                             -- GQs
+   AND ff.enumaf   = '1'
+   AND ff.test_id  = '<span id="currentTestIDValue37"></span>'
+   AND mx.test_id  = ff.test_id;                                     -- # Rows
+------------------------------------------------------------
+-- Total rows that match the conditions (Filter Criterias)
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.enumaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE ff.filtera  = 'P'
+   AND ff.filterb  = 'P'
+   AND ff.filterc  = 'P'
+   AND(    ff.filterd = 'P'
+        OR ff.filtere = 'P'
+        OR ff.filterj = 'P'
+        OR ff.filterk = 'P')
+   AND mx.gqhuflag = '2'                                             -- GQs
+   AND mx.mafid    = ff.mafid
+   AND ff.test_id  = '<span id="currentTestIDValue38"></span>'
+   AND mx.test_id  = ff.test_id;                                     -- # Rows
+------------------------------------------------------------
+-- Total rows that match conditions but with ENUMAF <> 1
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.enumaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE ff.filtera = 'P'
+   AND ff.filterb = 'P'
+   AND ff.filterc = 'P'
+   AND(    ff.filterd = 'P'
+        OR ff.filtere = 'P'
+        OR ff.filterj = 'P'
+        OR ff.filterk = 'P')
+   AND mx.gqhuflag          =  '2'                                   -- GQs
+   AND mx.mafid             =  ff.mafid
+   AND NVL(ff.enumaf, 'XX') <> '1'
+   AND ff.test_id = '<span id="currentTestIDValue39"></span>'
+   AND mx.test_id = ff.test_id;                                      -- No Rows
+--========================================================--
+-- ENUMAF = 1
+-- TLs    Must meet A, B, C, and one of D or M
+--========================================================--
+-- Total rows with ENUMAF = 1 for TLs
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.enumaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE mx.mafid    = ff.mafid
+   AND mx.gqhuflag = '5' AND mx.resstat = '1'                        -- TLs
+   AND ff.enumaf   = '1'
+   AND ff.test_id  = '<span id="currentTestIDValue40"></span>'
+   AND mx.test_id  = ff.test_id;                                     -- # Rows
+------------------------------------------------------------
+-- Total rows that match conditions (Filter Criteria)
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.enumaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE ff.filtera = 'P'
+   AND ff.filterb = 'P'
+   AND ff.filterc = 'P'
+   AND(    ff.filterd = 'P'
+        OR ff.filterm = 'P')
+   AND mx.gqhuflag = '5' AND mx.resstat = '1'                        -- TLs
+   AND mx.mafid   =  ff.mafid
+   AND ff.test_id = '<span id="currentTestIDValue41"></span>'
+   AND mx.test_id = ff.test_id;                                      -- # Rows
+------------------------------------------------------------
+-- Total rows that match conditions but with ENUMAF <> 1
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.enumaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE ff.filtera = 'P'
+   AND ff.filterb = 'P'
+   AND ff.filterc = 'P'
+   AND(    ff.filterd = 'P'
+        OR ff.filterm = 'P')
+   AND mx.gqhuflag = '5' AND mx.resstat = '1'                        -- TLs
+   AND mx.mafid             =  ff.mafid
+   AND NVL(ff.enumaf, 'XX') <> '1'
+   AND ff.test_id = '<span id="currentTestIDValue42"></span>'
+   AND mx.test_id = ff.test_id;                                      -- No Rows
+--========================================================--
+-- ENUMAF = 0
+-- TU, Nonres Set ENUMAF = 0
+--========================================================--
+-- Total rows with ENUMAF = 0 for TUs, and Nonres
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.enumaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE mx.mafid   = ff.mafid
+   AND ((    mx.gqhuflag             = '4' AND mx.resstat = '1'      -- TUs
+          OR NVL(mx.gqhuflag, 'XX') <> '2' AND mx.resstat = '2'))    -- Non Residentials
+   AND ff.enumaf  = '0'
+   AND ff.test_id = '<span id="currentTestIDValue43"></span>'
+   AND mx.test_id = ff.test_id;                                      -- # Rows
+------------------------------------------------------------
+-- Total rows that are TUs or Nonres
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.enumaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE mx.mafid   = ff.mafid
+   AND ((    mx.gqhuflag             = '4' AND mx.resstat = '1'      -- TUs
+          OR NVL(mx.gqhuflag, 'XX') <> '2' AND mx.resstat = '2'))    -- Non Residentials
+   AND ff.test_id = '<span id="currentTestIDValue44"></span>'
+   AND mx.test_id = ff.test_id;                                      -- # Rows
+------------------------------------------------------------
+-- Total rows that are TUs or Nonres but with ENUMAF <> 0
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.enumaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE mx.mafid   = ff.mafid
+   AND ((    mx.gqhuflag             = '4' AND mx.resstat = '1'      -- TUs
+          OR NVL(mx.gqhuflag, 'XX') <> '2' AND mx.resstat = '2'))    -- Non Residentials
+   AND NVL(ff.enumaf, 'XX')         <> '0'
+   AND ff.test_id = '<span id="currentTestIDValue45"></span>'
+   AND mx.test_id = ff.test_id;                                      -- No Rows
+--========================================================--
+
+--========================================================--
+-- LUCAAF = 1
+-- HUs    Must meet A, B, C, and one of D, E, F, G, H, or I
+--========================================================--
+-- Total rows with LUCAAF = 1 for HUs
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.lucaaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE mx.mafid    = ff.mafid
+   AND mx.gqhuflag = '0' AND mx.resstat = '1'                        -- HUs
+   AND ff.lucaaf   = '1'
+   AND ff.test_id  = '<span id="currentTestIDValue46"></span>'
+   AND mx.test_id  = ff.test_id;                                     -- # Rows
+------------------------------------------------------------
+-- Total rows that match the conditions (Filter Criterias)
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.lucaaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE ff.filtera = 'P'
+   AND ff.filterb = 'P'
+   AND ff.filterc = 'P'
+   AND(    ff.filterd = 'P'
+        OR ff.filtere = 'P'
+        OR ff.filterf = 'P'
+        OR ff.filterg = 'P'
+        OR ff.filterh = 'P'
+        OR ff.filteri = 'P')
+   AND mx.gqhuflag = '0' AND mx.resstat = '1'                        -- HUs
+   AND mx.mafid    = ff.mafid
+   AND ff.test_id  = '<span id="currentTestIDValue47"></span>'
+   AND mx.test_id  = ff.test_id;                                     -- # Rows
+------------------------------------------------------------
+-- Total rows that match the conditions but with lucaaf <> 1
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.lucaaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE ff.filtera = 'P'
+   AND ff.filterb = 'P'
+   AND ff.filterc = 'P'
+   AND(    ff.filterd = 'P'
+        OR ff.filtere = 'P'
+        OR ff.filterf = 'P'
+        OR ff.filterg = 'P'
+        OR ff.filterh = 'P'
+        OR ff.filteri = 'P')
+   AND mx.gqhuflag = '0' AND mx.resstat = '1'                        -- HUs
+   AND mx.mafid    = ff.mafid
+   AND ff.test_id  = '<span id="currentTestIDValue48"></span>'
+   AND mx.test_id  = ff.test_id
+   AND NVL(ff.lucaaf, 'XX') <> '1';                                  -- No Rows
+--========================================================--
+-- LUCAAF = 1
+-- GQs    Must meet A, B, C, and one of D, E, J, or K
+--========================================================--
+-- Total rows with LUCAAF = 1 for GQs
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.lucaaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE mx.mafid    = ff.mafid
+   AND mx.gqhuflag = '2'                                             -- GQs
+   AND ff.lucaaf   = '1'
+   AND ff.test_id  = '<span id="currentTestIDValue49"></span>'
+   AND mx.test_id  = ff.test_id;                                     -- # Rows
+------------------------------------------------------------
+-- Total rows that match the conditions (Filter Criterias)
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.lucaaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE ff.filtera  = 'P'
+   AND ff.filterb  = 'P'
+   AND ff.filterc  = 'P'
+   AND(    ff.filterd = 'P'
+        OR ff.filtere = 'P'
+        OR ff.filterj = 'P'
+        OR ff.filterk = 'P')
+   AND mx.gqhuflag = '2'                                             -- GQs
+   AND mx.mafid    = ff.mafid
+   AND ff.test_id  = '<span id="currentTestIDValue50"></span>'
+   AND mx.test_id  = ff.test_id;                                     -- # Rows
+------------------------------------------------------------
+-- Total rows that match conditions but with LUCAAF <> 1
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.lucaaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE ff.filtera = 'P'
+   AND ff.filterb = 'P'
+   AND ff.filterc = 'P'
+   AND(    ff.filterd = 'P'
+        OR ff.filtere = 'P'
+        OR ff.filterj = 'P'
+        OR ff.filterk = 'P')
+   AND mx.gqhuflag          =  '2'                                   -- GQs
+   AND mx.mafid             =  ff.mafid
+   AND NVL(ff.lucaaf, 'XX') <> '1'
+   AND ff.test_id = '<span id="currentTestIDValue51"></span>'
+   AND mx.test_id = ff.test_id;                                      -- No Rows
+--========================================================--
+-- LUCAAF = 1
+-- TLs    Must meet A, B, C, and one of D or M
+--========================================================--
+-- Total rows with LUCAAF = 1 for TLs
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.lucaaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE mx.mafid    = ff.mafid
+   AND mx.gqhuflag = '5' AND mx.resstat = '1'                        -- TLs
+   AND ff.lucaaf   = '1'
+   AND ff.test_id  = '<span id="currentTestIDValue52"></span>'
+   AND mx.test_id  = ff.test_id;                                     -- # Rows
+------------------------------------------------------------
+-- Total rows that match conditions (Filter Criteria)
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.lucaaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE ff.filtera = 'P'
+   AND ff.filterb = 'P'
+   AND ff.filterc = 'P'
+   AND(    ff.filterd = 'P'
+        OR ff.filterm = 'P')
+   AND mx.gqhuflag = '5' AND mx.resstat = '1'                        -- TLs
+   AND mx.mafid   =  ff.mafid
+   AND ff.test_id = '<span id="currentTestIDValue53"></span>'
+   AND mx.test_id = ff.test_id;                                      -- # Rows
+------------------------------------------------------------
+-- Total rows that match conditions but with LUCAAF <> 1
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.lucaaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE ff.filtera = 'P'
+   AND ff.filterb = 'P'
+   AND ff.filterc = 'P'
+   AND(    ff.filterd = 'P'
+        OR ff.filterm = 'P')
+   AND mx.gqhuflag = '5' AND mx.resstat = '1'                        -- TLs
+   AND mx.mafid             =  ff.mafid
+   AND NVL(ff.lucaaf, 'XX') <> '1'
+   AND ff.test_id = '<span id="currentTestIDValue54"></span>'
+   AND mx.test_id = ff.test_id;                                      -- No Rows
+--========================================================--
+-- LUCAAF = 0
+-- TU, Nonres Set LUCAAF = 0
+--========================================================--
+-- Total rows with LUCAAF = 0 for TUs, and Nonres
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.lucaaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE mx.mafid   = ff.mafid
+   AND ((    mx.gqhuflag             = '4' AND mx.resstat = '1'      -- TUs
+          OR NVL(mx.gqhuflag, 'XX') <> '2' AND mx.resstat = '2'))    -- Non Residentials
+   AND ff.lucaaf  = '0'
+   AND ff.test_id = '<span id="currentTestIDValue56"></span>'
+   AND mx.test_id = ff.test_id;                                      -- # Rows
+------------------------------------------------------------
+-- Total rows that are TUs or Nonres
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.lucaaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE mx.mafid   = ff.mafid
+   AND ((    mx.gqhuflag             = '4' AND mx.resstat = '1'      -- TUs
+          OR NVL(mx.gqhuflag, 'XX') <> '2' AND mx.resstat = '2'))    -- Non Residentials
+   AND ff.test_id = '<span id="currentTestIDValue57"></span>'
+   AND mx.test_id = ff.test_id;                                      -- # Rows
+------------------------------------------------------------
+-- Total rows that are TUs or Nonres but with LUCAAF <> 0
+------------------------------------------------------------
+SELECT /*+ PARALLEL(32) */ TO_CHAR(COUNT(1), '999,999,999')
+  FROM rt_mafx.lucaaf_filter_flag ff,
+       rt_mafx.mafx               mx
+ WHERE mx.mafid   = ff.mafid
+   AND ((    mx.gqhuflag             = '4' AND mx.resstat = '1'      -- TUs
+          OR NVL(mx.gqhuflag, 'XX') <> '2' AND mx.resstat = '2'))    -- Non Residentials
+   AND NVL(ff.lucaaf, 'XX')         <> '0'
+   AND ff.test_id = '<span id="currentTestIDValue58"></span>'
+   AND mx.test_id = ff.test_id;                                      -- No Rows
+--========================================================--
+			
+			</section>
+			</pre>
+        </div>
+        <button class="collapsible">1.2.2. CENAF AUTO RUN VALIDATION</button>
+        <div id="content-cenaf-run-a" class="content">
+        <button class="copy-btn" onclick="copyContent('content-cenaf-run-a')">Copy</button>
+		<hr>
+		<pre>
+		1. CENAF Auto run Validation for all entities
+		
+		@C:\test\CENAF_Validation_auto_script.sql <span id="currentTestIDValue59"></span> <span id="dbInstanceValue34"></span> RUN 00000
+		
+		Output File : C:\test\CENAF_Validation_auto_output.txt
+		<hr>
+		2. CENAF Auto run Validation for spacific entity
+		
+		@C:\test\CENAF_Validation_auto_script.sql <span id="currentTestIDValue60"></span> <span id="dbInstanceValue35"></span> RUN 02068
+		
+		Output File : C:\test\CENAF_Validation_auto_output.txt
+		</pre>
+        </div>
+    </div>
+
+</div>
+
+<button class="collapsible">2. RetSurvLinkage VALIDATION</button>
+        <div id="content-retsurv" class="content">
+        <button class="copy-btn" onclick="copyContent('content-retsurv')">Copy</button>
+		<hr>
+	<pre id="retsurvPreContent">
+	
+
+-- in PRODTRAN 
+
+SELECT * from APUTILS.ref_apv_scrpts_cnfg_lkp where test_id LIKE '%TEST<span id="scYearN2"></span>_SC%' and app_wallet = 'PDMAF_VIEW_CQRBNCH';
+
+select * from PDMAF_VIEW.REF_SPECIAL_CENSUS_CASES where USE_FLG='Y'; 
+
+select * from PDMAF_VIEW.REF_SPECIAL_CENSUS_CASES where TEST_ID like '%TEST<span id="scYearN"></span>_SC%' and USE_FLG = 'Y';
+
+-- REF_RETSURV_LNKG_LKP
+
+select /*+ parallel(32) */ count(*) from PDMAF_VIEW.REF_RETSURV_LNKG_LKP;
+
+SELECT /*+ parallel(32) */ COUNT(*)
+    FROM 
+    ((SELECT /*+ parallel(32) */m1.mafid,m1.oid,m1.survoid,m1.census2020,m1.legacymafid 
+     FROM MAFTIGER.MAFUNIT m1,MAFTIGER.MAFUNIT m2
+     WHERE m1.survoid = m2.oid
+     AND EXISTS
+    (SELECT /*+ parallel(32) */1 
+     FROM ACSBLKSFX.SPCENBLOCK t, MAFTIGER.featmafunitrel f, MAFTIGER.mafunit m, PDMAF_VIEW.ref_special_census_cases r
+     WHERE t.oid = f.oidfe
+     AND f.oidmu = m.oid
+     AND m2.oid=m.oid
+     AND t.scid=r.scid
+     AND r.use_flg='Y'))
+     UNION
+     (SELECT /*+ parallel(32) */m1.mafid,m1.oid,m1.survoid,m1.census2020,m1.legacymafid 
+     FROM MAFTIGER.MAFUNIT m1,MAFTIGER.MAFUNIT m2
+     WHERE m1.oid = m2.survoid
+     AND EXISTS
+    (SELECT /*+ parallel(32) */1 
+     FROM ACSBLKSFX.SPCENBLOCK t, MAFTIGER.featmafunitrel f, MAFTIGER.mafunit m, PDMAF_VIEW.ref_special_census_cases r
+     WHERE t.oid = f.oidfe
+     AND f.oidmu = m.oid
+     AND m2.oid=m.oid
+     AND t.scid=r.scid
+     AND r.use_flg='Y'))
+    );
+
+-- MINUS 1
+	
+select /*+ parallel(32) */ OID,MAFID,SURVOID,CENSUS2020,LEGACYMAFID from PDMAF_VIEW.REF_RETSURV_LNKG_LKP
+	MINUS
+	SELECT /*+ parallel(32) */
+      OID,
+      MAFID,
+      SURVOID,
+      CENSUS2020,
+      LEGACYMAFID
+   FROM 
+   ((SELECT /*+ parallel(32) */m1.mafid,m1.oid,m1.survoid,m1.census2020,m1.legacymafid 
+    FROM MAFTIGER.MAFUNIT m1,MAFTIGER.MAFUNIT m2
+    WHERE m1.survoid = m2.oid
+    AND EXISTS
+   (SELECT /*+ parallel(32) */1 
+    FROM ACSBLKSFX.SPCENBLOCK t, MAFTIGER.featmafunitrel f, MAFTIGER.mafunit m, PDMAF_VIEW.ref_special_census_cases r
+    WHERE t.oid = f.oidfe
+    AND f.oidmu = m.oid
+    AND m2.oid=m.oid
+    AND t.scid=r.scid
+    AND r.use_flg='Y'))
+    UNION
+    (SELECT /*+ parallel(32) */m1.mafid,m1.oid,m1.survoid,m1.census2020,m1.legacymafid 
+    FROM MAFTIGER.MAFUNIT m1,MAFTIGER.MAFUNIT m2
+    WHERE m1.oid = m2.survoid
+    AND EXISTS
+   (SELECT /*+ parallel(32) */1 
+    FROM ACSBLKSFX.SPCENBLOCK t, MAFTIGER.featmafunitrel f, MAFTIGER.mafunit m, PDMAF_VIEW.ref_special_census_cases r
+    WHERE t.oid = f.oidfe
+    AND f.oidmu = m.oid
+    AND m2.oid=m.oid
+    AND t.scid=r.scid
+    AND r.use_flg='Y'))
+   );
+
+-- MINUS 2
+   
+SELECT /*+ parallel(32) */
+      OID,
+      MAFID,
+      SURVOID,
+      CENSUS2020,
+      LEGACYMAFID
+   FROM 
+   ((SELECT /*+ parallel(32) */m1.mafid,m1.oid,m1.survoid,m1.census2020,m1.legacymafid 
+    FROM MAFTIGER.MAFUNIT m1,MAFTIGER.MAFUNIT m2
+    WHERE m1.survoid = m2.oid
+    AND EXISTS
+   (SELECT /*+ parallel(32) */1 
+    FROM ACSBLKSFX.SPCENBLOCK t, MAFTIGER.featmafunitrel f, MAFTIGER.mafunit m, PDMAF_VIEW.ref_special_census_cases r
+    WHERE t.oid = f.oidfe
+    AND f.oidmu = m.oid
+    AND m2.oid=m.oid
+    AND t.scid=r.scid
+    AND r.use_flg='Y'))
+    UNION
+    (SELECT /*+ parallel(32) */m1.mafid,m1.oid,m1.survoid,m1.census2020,m1.legacymafid 
+    FROM MAFTIGER.MAFUNIT m1,MAFTIGER.MAFUNIT m2
+    WHERE m1.oid = m2.survoid
+    AND EXISTS
+   (SELECT /*+ parallel(32) */1 
+    FROM ACSBLKSFX.SPCENBLOCK t, MAFTIGER.featmafunitrel f, MAFTIGER.mafunit m, PDMAF_VIEW.ref_special_census_cases r
+    WHERE t.oid = f.oidfe
+    AND f.oidmu = m.oid
+    AND m2.oid=m.oid
+    AND t.scid=r.scid
+    AND r.use_flg='Y'))
+   )
+   MINUS
+   select /*+ parallel(32) */ OID,MAFID,SURVOID,CENSUS2020,LEGACYMAFID from PDMAF_VIEW.REF_RETSURV_LNKG_LKP;
+   
+-- SPCENBLOCK Validation
+
+select /*+ parallel(32) */ count(*) from PDMAF_VIEW.SPCENBLOCK;   
+
+SELECT /*+ parallel(32) */ COUNT(*) FROM ACSBLKSFX.SPCENBLOCK;
+
+-- for spacific state and county
+
+SELECT COUNT(*), STATEFP, COUNTYFP, BENCHMARK
+FROM ACSBLKSFX.SPCENBLOCK
+WHERE STATEFP IN ('18', '19') 
+  AND COUNTYFP IN ('011', '057', '103', '153')
+GROUP BY STATEFP, COUNTYFP, BENCHMARK;
+
+SELECT COUNT(*), STATEFP,COUNTYFP, BENCHMARK
+FROM PDMAF_VIEW.SPCENBLOCK
+WHERE STATEFP IN ('18', '19') 
+  AND COUNTYFP IN ('011', '057', '103', '153')
+GROUP BY STATEFP, COUNTYFP, BENCHMARK;
+   
+
+-- MINUS 1
+
+ SELECT /*+ parallel(32) */
+  OID,STATEFP,COUNTYFP,TRACTCE,BLOCKCE,SUFFIX1CE,SCID,
+  INSIDE,BENCHMARK,SHARED,SYSDATE
+FROM PDMAF_VIEW.SPCENBLOCK
+MINUS  
+ SELECT /*+ parallel(32) */
+  OID,STATEFP,COUNTYFP,TRACTCE,BLOCKCE,SUFFIX1CE,SCID,
+  INSIDE,BENCHMARK,SHARED,SYSDATE
+ FROM ACSBLKSFX.SPCENBLOCK;
+ 
+-- MINUS 2
+
+ SELECT /*+ parallel(32) */
+  OID,STATEFP,COUNTYFP,TRACTCE,BLOCKCE,SUFFIX1CE,SCID,
+  INSIDE,BENCHMARK,SHARED,SYSDATE
+FROM ACSBLKSFX.SPCENBLOCK
+MINUS  
+ SELECT /*+ parallel(32) */
+  OID,STATEFP,COUNTYFP,TRACTCE,BLOCKCE,SUFFIX1CE,SCID,
+  INSIDE,BENCHMARK,SHARED,SYSDATE
+ FROM PDMAF_VIEW.SPCENBLOCK;
+
+<hr>
+
+-- in CQRBNCH
+
+select * from PDMAF_VIEW.REF_SPECIAL_CENSUS_CASES where USE_FLG='Y'; 
+
+select * from PDMAF_VIEW.REF_SPECIAL_CENSUS_CASES where TEST_ID like '%TEST<span id="scYearN1"></span>_SC%' and USE_FLG = 'Y';
+
+-- SPCENBLOCK 
+
+-- in CQRBNCH	 
+select /*+ parallel(32) */ count(*) from PDMAF_VIEW.SPCENBLOCK; 
+
+-- in PRODTRAN	 
+select /*+ parallel(32) */ count(*) from PDMAF_VIEW.SPCENBLOCK; 
+  
+-- REF_RETSURV_LNKG_LKP 
+		 
+
+-- in CQRBNCH
+select /*+ parallel(32) */ count(*) from PDMAF_VIEW.REF_RETSURV_LNKG_LKP; 
+
+-- in PRODTRAN	
+select /*+ parallel(32) */ count(*) from PDMAF_VIEW.REF_RETSURV_LNKG_LKP; 
+
+<hr>
+
+-- in <span id="schemaResultValueMAFX129"></span>
+
+-- SPCENBLOCK 
+
+select /*+ parallel(32) */ count(*) from <span id="schemaResultValueMAFX130"></span>.SPCENBLOCK; 
+
+select /*+ parallel(32) */ count(*) from PDMAF_VIEW.SPCENBLOCK; 
+
+-- for spacific state and county
+
+SELECT COUNT(*), STATEFP,COUNTYFP, BENCHMARK
+FROM <span id="schemaResultValueMAFX137"></span>.SPCENBLOCK
+WHERE STATEFP IN ('18', '19') 
+  AND COUNTYFP IN ('011', '057', '103', '153')
+GROUP BY STATEFP, COUNTYFP, BENCHMARK;
+
+SELECT COUNT(*), STATEFP,COUNTYFP, BENCHMARK
+FROM PDMAF_VIEW.SPCENBLOCK
+WHERE STATEFP IN ('18', '19') 
+  AND COUNTYFP IN ('011', '057', '103', '153')
+GROUP BY STATEFP, COUNTYFP, BENCHMARK;
+
+
+-- MINUS 1
+         
+		 select /*+ parallel(32) */ OID ,STATEFP,
+		 COUNTYFP,TRACTCE,BLOCKCE,SUFFIX1CE,
+		 SCID,INSIDE,BENCHMARK,SHARED
+		 from <span id="schemaResultValueMAFX131"></span>.SPCENBLOCK
+		 MINUS
+		 select /*+ parallel(32) */ OID ,STATEFP,
+		 COUNTYFP,TRACTCE,BLOCKCE,SUFFIX1CE,
+		 SCID,INSIDE,BENCHMARK,SHARED
+		 from PDMAF_VIEW.SPCENBLOCK;
+		 
+-- MINUS 2
+         
+		 select /*+ parallel(32) */ OID ,STATEFP,
+		 COUNTYFP,TRACTCE,BLOCKCE,SUFFIX1CE,
+		 SCID,INSIDE,BENCHMARK,SHARED
+		 from PDMAF_VIEW.SPCENBLOCK
+		 MINUS
+		 select /*+ parallel(32) */ OID ,STATEFP,
+		 COUNTYFP,TRACTCE,BLOCKCE,SUFFIX1CE,
+		 SCID,INSIDE,BENCHMARK,SHARED
+		 from <span id="schemaResultValueMAFX132"></span>.SPCENBLOCK;
+		 
+-- REF_RETSURV_LNKG_LKP
+
+select /*+ parallel(32) */ count(*) from <span id="schemaResultValueMAFX134"></span>.REF_RETSURV_LNKG_LKP; 
+		 
+select /*+ parallel(32) */ count(*) from PDMAF_VIEW.REF_RETSURV_LNKG_LKP; 
+
+-- MINUS 1
+         
+		 select /*+ parallel(32) */ OID ,MAFID,
+		 SURVOID,CENSUS2020,LEGACYMAFID
+		 from <span id="schemaResultValueMAFX135"></span>.REF_RETSURV_LNKG_LKP
+		 MINUS
+		 select /*+ parallel(32) */ OID ,MAFID,
+		 SURVOID,CENSUS2020,LEGACYMAFID
+		 from PDMAF_VIEW.REF_RETSURV_LNKG_LKP;
+		 
+-- MINUS 2
+         
+		 select /*+ parallel(32) */ OID ,MAFID,
+		 SURVOID,CENSUS2020,LEGACYMAFID
+		 from PDMAF_VIEW.REF_RETSURV_LNKG_LKP
+		 MINUS
+		 select /*+ parallel(32) */ OID ,MAFID,
+		 SURVOID,CENSUS2020,LEGACYMAFID
+		 from <span id="schemaResultValueMAFX136"></span>.REF_RETSURV_LNKG_LKP;
+	</pre>
+</div>
+
+<button class="collapsible">3. APV</button>
+<div class="content">
+    <button class="collapsible">3.1. APV SETUP VALIDATION</button>
+    <div class="content">
+        <button class="collapsible">3.1.1. APV MANUAL SETUP VALIDATION</button>
+        <div id="content-apv_stp_m" class="content">
+        <button class="copy-btn" onclick="copyContent('content-apv_stp_m')">Copy</button>
+		<hr>
+            <pre>
+			
+
+
+-- CHECK EXISTING DATA
+
+-- PDMAF_VIEW.APV_SCRIPTS_CONFIG
+
+SELECT *
+FROM PDMAF_VIEW.APV_SCRIPTS_CONFIG
+WHERE TEST_ID='<span id="currentTestIDValue61"></span>' AND APP_WALLET = 'PDMAF_VIEW_<span id="dbInstanceValue36"></span>'
+ORDER BY PROCESS_CODE,PROCESS_SEQUENCE;
+
+-- APV_CONFIG_TBL
+
+SELECT *
+FROM PDMAF_VIEW.APV_CONFIG_TBL 
+WHERE TEST_ID='<span id="currentTestIDValue62"></span>' AND DB_INSTANCE='<span id="dbInstanceValue37"></span>';
+
+<hr>
+-- DC_CONFIG
+
+SELECT * FROM APUTILS.DC_CONFIG 
+WHERE TEST_ID='<span id="currentTestIDValue63"></span>';
+
+-- DC_REF_COLATTRIBS
+
+SELECT * FROM APUTILS.DC_REF_COLATTRIBS
+WHERE TEST_ID='<span id="currentTestIDValue64"></span>';
+
+-- DC_REF_CHARSET
+
+SELECT COUNT(*) FROM APUTILS.DC_REF_CHARSET
+WHERE TEST_ID='<span id="currentTestIDValue65"></span>'; -- 34
+
+<hr>
+-- MAFXTLS_CONFIG
+
+SELECT *
+FROM GEO_TALLIES.MAFXTLS_CONFIG
+WHERE TEST_ID='<span id="currentTestIDValue66"></span>' AND DB_INSTANCE='<span id="dbInstanceValue38"></span>';
+
+<hr>
+-- REF_COMPONENTS
+
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME='ADSDSF'  ORDER BY COMPONENT_ID;
+
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME='PDBPDMAFX' ORDER BY COMPONENT_ID;
+
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME='ADSADDR' ORDER BY COMPONENT_ID;
+
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME='ACSDEL_0' ORDER BY COMPONENT_ID;
+
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME='ACSDEL_1' ORDER BY COMPONENT_ID;
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME='ACSDEL_3' ORDER BY COMPONENT_ID;
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME='ACSDEL_4' ORDER BY COMPONENT_ID;
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME='ACSDEL_5' ORDER BY COMPONENT_ID;
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME='PEPAFHISTPO' ORDER BY COMPONENT_ID;
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME='PEPAFHISTPR' ORDER BY COMPONENT_ID;
+
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME = 'ADSDSF' and COLUMN_NAME ='<span id="dsfResultUpper"></span>';
+
+SELECT POPULATE_FLAG FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME = 'PDBPDMAFX' and COLUMN_NAME='<span id="dsfResultUpper1"></span>';-- POPULATE_FLAG->Y
+
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME = 'ADSADDR' and COLUMN_NAME='<span id="dsfResultUpper2"></span>';
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME = 'ACSDEL_0' and COLUMN_NAME='<span id="dsfResultLower"></span>';
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME = 'ACSDEL_1' and COLUMN_NAME='<span id="dsfResultLower1"></span>';
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME = 'ACSDEL_3' and COLUMN_NAME='<span id="dsfResultLower2"></span>';
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME = 'ACSDEL_4' and COLUMN_NAME='<span id="dsfResultLower3"></span>';
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME = 'ACSDEL_5' and COLUMN_NAME='<span id="dsfResultLower4"></span>';
+
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME = 'PEPAFHISTPO' and COLUMN_NAME='PEPAF_<span id="curentYearMResult"></span>';-- POPULATE_FLAG->O
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME = 'PEPAFHISTPO' and COLUMN_NAME='PEPAF_<span id="curentYearResult"></span>';-- POPULATE_FLAG->N
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME = 'PEPAFHISTPR' and COLUMN_NAME='PEPAF_<span id="curentYearM2Result"></span>';-- POPULATE_FLAG->O
+SELECT * FROM PDMAF_VIEW.REF_COMPONENTS WHERE COMPONENT_NAME = 'PEPAFHISTPR' and COLUMN_NAME='PEPAF_<span id="curentYearM1Result"></span>';-- POPULATE_FLAG->N
+			
+			</pre>
+        </div>
+        <button class="collapsible">3.1.2. APV AUTO SETUP VALIDATION</button>
+        <div id="content-apv_stp_a" class="content">
+        <button class="copy-btn" onclick="copyContent('content-apv_stp_a')">Copy</button>
+		<hr>
+		<pre>
+		1. Ref APV Auto Validation
+		
+		@C:\test\REF_Validation_auto.sql APV <span id="currentTestIDValue67"></span> <span id="previousTestIDValue21"></span> <span id="dbInstanceValue39"></span>
+		
+		Output File : C:\test\REF_Validation_auto_output.txt
+		<hr>
+		2. APV Setup Auto Validation
+		
+		@C:\test\APV_Setup_Validation_auto_script.sql <span id="currentTestIDValue68"></span> <span id="previousTestIDValue22"></span> <span id="dbInstanceValue40"></span>
+		
+		Output File : C:\test\APV_Setup_Validation_auto_output.txt
+		</pre>
+        </div>
+    </div>
+    <button class="collapsible">3.2. APV RUN VALIDATION</button>
+    <div class="content">
+        <button class="collapsible">3.2.1. APV MANUAL RUN VALIDATION</button>
+        <div id="content-apv_run_m" class="content">
+        <button class="copy-btn" onclick="copyContent('content-apv_run_m')">Copy</button>
+		<hr>
+            <pre>
+			
+
+
+select count(*) from <span id="schemaResultValue4"></span>.mafunit 
+where mtfcc <> 'U2100'
+and statefp is not null; -- this count should equal this count select count(*) from <span id="schemaResultValueMAFX1"></span>.pdmafx
+
+select count(*) from <span id="schemaResultValueMAFX2"></span>.pdmafx;
+
+<hr>
+
+select * from pdmaf_view.apv_process_time
+ where TEST_ID IN = '<span id="currentTestIDValue69"></span>';
+
+select * 
+FROM <span id="schemaResultValueMAFX3"></span>.MAFXTLS_PRODUCT WHERE  TEST_ID = '<span id="currentTestIDValue70"></span>';
+
+<hr>
+
+
+
+SELECT /*+ parallel(32) */
+to_char(OID) OID,MAFID,SURVMAFID,MTFCC,UNITSTAT,XTYP,CURSTATE,CURCOUNTY,CURBLKST,CURBLKCOU,CURBLKTRACT,CURBLK,
+TO_CHAR(OIDTB) OIDTB,RESSTAT,DELPTTYPE,MSPID,CARRETERA,CENSURV,CENSTAT2020,CENSUS2020,DSFBASEALT,
+DSFRT,
+IS2020DLV,GQHUFLAG,GQTYPCUR,GQNAME,PDCONVNEW,MAFSRC,LOCDESC,LOCWSDESC1,LOCWSID1,LOCZIP,LOCAPTCOMPLEX,LOCAREANM1,LOCURB,LOCZIPCLASS,
+COMPLETEMAILHN,COMPLETEMAILNAME,COMPLETELOCHN,COMPLETELOCNAME,MAILWSDESC1,MAILWSID1,MAILZIP,MAILAPTCOMPLEX,MAILAREANM1,MAILURB,
+MAILZIPCLASS,POSTZIPCLASS,KMHM,RAMAL,DSFFAL97,DSFSPR98,DSFFAL98,DSFFAL99,DSFFEB00,DSFSPR00,DSFFAL00,DSFSPR01,DSFFAL01,DSFSPR02,
+DSFFAL02,DSFSPR03,DSFFAL03,DSFSPR04,DSFFAL04,DSFSPR05,DSFFAL05,DSFSPR06,DSFFAL06,DSFSPR07,DSFFAL07,DSFSPR08,DSFFAL08,DSFSPR09,DSFFAL09,
+DSFSPR10,DSFFAL10,DSFSPR11,DSFFAL11,DSFSPR12,DSFFAL12,DSFSPR13,DSFFAL13,DSFSPR14,DSFFAL14,DSFSPR15,DSFFAL15,DSFSPR16,DSFFAL16,DSFSPR17,
+DSFFAL17,DSFSPR18,DSFFAL18,DSFSPR19,DSFFAL19,DSFSPR20,DSFFAL20,DSFSPR21,DSFFAL21,DSFSPR22,DSFFAL22,DSFSPR23,DSFFAL23,
+DSFSPR24,DSFFAL24,DSFSPR25,DSFFAL25,DSFSPR26,DSFFAL26,DSFSPR27,DSFFAL27,DSFSPR28,DSFFAL28,DSFSPR29,DSFFAL29,DSFSPR30,BCUID,BCUSTATEFP,
+BCUCOUNTYFP,BCUTRACTCE,to_char(OIDBCU),ISUCMDLV,CENSUS2010 
+FROM RT_MAFX.MAFX WHERE TEST_ID='<span id="currentTestIDValue71"></span>'
+AND MAFID IN (SELECT MAFID FROM <span id="schemaResultValueMAFX4"></span>.PDMAFX) 
+MINUS
+SELECT /*+ parallel(32) */ 
+OID,
+MAFID,SURVMAFID,MTFCC,UNITSTAT,XTYP,CURSTATE,CURCOUNTY,CURBLKST,CURBLKCOU,CURBLKTRACT,CURBLK,
+OIDTB,
+RESSTAT,DELPTTYPE,MSPID,CARRETERA,CENSURV,CENSTAT2020,CENSUS2020,DSFBASEALT,DSFRT,
+IS2020DLV,GQHUFLAG,GQTYPCUR,GQNAME,PDCONVNEW,MAFSRC,LOCDESC,LOCWSDESC1,LOCWSID1,LOCZIP,LOCAPTCOMPLEX,LOCAREANM1,LOCURB,LOCZIPCLASS,
+COMPLETEMAILHN,COMPLETEMAILNAME,COMPLETELOCHN,COMPLETELOCNAME,MAILWSDESC1,MAILWSID1,MAILZIP,MAILAPTCOMPLEX,MAILAREANM1,MAILURB,
+MAILZIPCLASS,POSTZIPCLASS,KMHM,RAMAL,DSFFAL97,DSFSPR98,DSFFAL98,DSFFAL99,DSFFEB00,DSFSPR00,DSFFAL00,DSFSPR01,DSFFAL01,DSFSPR02,
+DSFFAL02,DSFSPR03,DSFFAL03,DSFSPR04,DSFFAL04,DSFSPR05,DSFFAL05,DSFSPR06,DSFFAL06,DSFSPR07,DSFFAL07,DSFSPR08,DSFFAL08,DSFSPR09,DSFFAL09,
+DSFSPR10,DSFFAL10,DSFSPR11,DSFFAL11,DSFSPR12,DSFFAL12,DSFSPR13,DSFFAL13,DSFSPR14,DSFFAL14,DSFSPR15,DSFFAL15,DSFSPR16,DSFFAL16,DSFSPR17,
+DSFFAL17,DSFSPR18,DSFFAL18,DSFSPR19,DSFFAL19,DSFSPR20,DSFFAL20,DSFSPR21,DSFFAL21,DSFSPR22,DSFFAL22,DSFSPR23,DSFFAL23,
+DSFSPR24,DSFFAL24,DSFSPR25,DSFFAL25,DSFSPR26,DSFFAL26,DSFSPR27,DSFFAL27,DSFSPR28,DSFFAL28,DSFSPR29,DSFFAL29,DSFSPR30,BCUID,BCUSTATEFP,
+BCUCOUNTYFP,BCUTRACTCE,OIDBCU,ISUCMDLV,CENSUS2010 
+FROM <span id="schemaResultValueMAFX5"></span>.PDMAFX
+WHERE MAFID IN (SELECT MAFID FROM RT_MAFX.MAFX WHERE TEST_ID='<span id="currentTestIDValue72"></span>');
+
+
+
+SELECT /*+ parallel(32) */ 
+OID,
+MAFID,SURVMAFID,MTFCC,UNITSTAT,XTYP,CURSTATE,CURCOUNTY,CURBLKST,CURBLKCOU,CURBLKTRACT,CURBLK,
+OIDTB,
+RESSTAT,DELPTTYPE,MSPID,CARRETERA,CENSURV,CENSTAT2020,CENSUS2020,DSFBASEALT,DSFRT,
+IS2020DLV,GQHUFLAG,GQTYPCUR,GQNAME,PDCONVNEW,MAFSRC,LOCDESC,LOCWSDESC1,LOCWSID1,LOCZIP,LOCAPTCOMPLEX,LOCAREANM1,LOCURB,LOCZIPCLASS,
+COMPLETEMAILHN,COMPLETEMAILNAME,COMPLETELOCHN,COMPLETELOCNAME,MAILWSDESC1,MAILWSID1,MAILZIP,MAILAPTCOMPLEX,MAILAREANM1,MAILURB,
+MAILZIPCLASS,POSTZIPCLASS,KMHM,RAMAL,DSFFAL97,DSFSPR98,DSFFAL98,DSFFAL99,DSFFEB00,DSFSPR00,DSFFAL00,DSFSPR01,DSFFAL01,DSFSPR02,
+DSFFAL02,DSFSPR03,DSFFAL03,DSFSPR04,DSFFAL04,DSFSPR05,DSFFAL05,DSFSPR06,DSFFAL06,DSFSPR07,DSFFAL07,DSFSPR08,DSFFAL08,DSFSPR09,DSFFAL09,
+DSFSPR10,DSFFAL10,DSFSPR11,DSFFAL11,DSFSPR12,DSFFAL12,DSFSPR13,DSFFAL13,DSFSPR14,DSFFAL14,DSFSPR15,DSFFAL15,DSFSPR16,DSFFAL16,DSFSPR17,
+DSFFAL17,DSFSPR18,DSFFAL18,DSFSPR19,DSFFAL19,DSFSPR20,DSFFAL20,DSFSPR21,DSFFAL21,DSFSPR22,DSFFAL22,DSFSPR23,DSFFAL23,
+DSFSPR24,DSFFAL24,DSFSPR25,DSFFAL25,DSFSPR26,DSFFAL26,DSFSPR27,DSFFAL27,DSFSPR28,DSFFAL28,DSFSPR29,DSFFAL29,DSFSPR30,BCUID,BCUSTATEFP,
+BCUCOUNTYFP,BCUTRACTCE,OIDBCU,ISUCMDLV,CENSUS2010 
+FROM <span id="schemaResultValueMAFX6"></span>.PDMAFX
+WHERE MAFID IN (SELECT MAFID FROM RT_MAFX.MAFX WHERE TEST_ID='<span id="currentTestIDValue73"></span>')
+MINUS
+SELECT /*+ parallel(32) */
+to_char(OID) OID,MAFID,SURVMAFID,MTFCC,UNITSTAT,XTYP,CURSTATE,CURCOUNTY,CURBLKST,CURBLKCOU,CURBLKTRACT,CURBLK,
+TO_CHAR(OIDTB) OIDTB,RESSTAT,DELPTTYPE,MSPID,CARRETERA,CENSURV,CENSTAT2020,CENSUS2020,DSFBASEALT,
+DSFRT,
+IS2020DLV,GQHUFLAG,GQTYPCUR,GQNAME,PDCONVNEW,MAFSRC,LOCDESC,LOCWSDESC1,LOCWSID1,LOCZIP,LOCAPTCOMPLEX,LOCAREANM1,LOCURB,LOCZIPCLASS,
+COMPLETEMAILHN,COMPLETEMAILNAME,COMPLETELOCHN,COMPLETELOCNAME,MAILWSDESC1,MAILWSID1,MAILZIP,MAILAPTCOMPLEX,MAILAREANM1,MAILURB,
+MAILZIPCLASS,POSTZIPCLASS,KMHM,RAMAL,DSFFAL97,DSFSPR98,DSFFAL98,DSFFAL99,DSFFEB00,DSFSPR00,DSFFAL00,DSFSPR01,DSFFAL01,DSFSPR02,
+DSFFAL02,DSFSPR03,DSFFAL03,DSFSPR04,DSFFAL04,DSFSPR05,DSFFAL05,DSFSPR06,DSFFAL06,DSFSPR07,DSFFAL07,DSFSPR08,DSFFAL08,DSFSPR09,DSFFAL09,
+DSFSPR10,DSFFAL10,DSFSPR11,DSFFAL11,DSFSPR12,DSFFAL12,DSFSPR13,DSFFAL13,DSFSPR14,DSFFAL14,DSFSPR15,DSFFAL15,DSFSPR16,DSFFAL16,DSFSPR17,
+DSFFAL17,DSFSPR18,DSFFAL18,DSFSPR19,DSFFAL19,DSFSPR20,DSFFAL20,DSFSPR21,DSFFAL21,DSFSPR22,DSFFAL22,DSFSPR23,DSFFAL23,
+DSFSPR24,DSFFAL24,DSFSPR25,DSFFAL25,DSFSPR26,DSFFAL26,DSFSPR27,DSFFAL27,DSFSPR28,DSFFAL28,DSFSPR29,DSFFAL29,DSFSPR30,BCUID,BCUSTATEFP,
+BCUCOUNTYFP,BCUTRACTCE,to_char(OIDBCU),ISUCMDLV,CENSUS2010 
+FROM RT_MAFX.MAFX WHERE TEST_ID='<span id="currentTestIDValue74"></span>'
+AND MAFID IN (SELECT MAFID FROM <span id="schemaResultValueMAFX7"></span>.PDMAFX);--No rows 
+
+<hr>
+
+SELECT TEA,COUNT(*) FROM RT_MAFX.MAFX WHERE TEST_ID='<span id="currentTestIDValue75"></span>' GROUP BY TEA;
+
+SELECT TEA,COUNT(*) FROM <span id="schemaResultValueMAFX8"></span>.PDMAFX  GROUP BY TEA; 
+
+<hr>
+
+select /*+ parallel(32) */oidpdmu,action,opdate from <span id="schemaResultValueMAFX9"></span>.pdmafop
+minus
+select /*+ parallel(32) */TO_CHAR(oidpdmu),action,opdate from RT_MAFX.mafop WHERE TEST_ID='<span id="currentTestIDValue76"></span>';--NO ROWS
+
+
+select /*+ parallel(32) */to_char(oidpdmu),action,opdate from RT_MAFX.mafop WHERE TEST_ID='<span id="currentTestIDValue77"></span>'
+minus
+select /*+ parallel(32) */oidpdmu,action,opdate from <span id="schemaResultValueMAFX128"></span>.pdmafop;-- no rows
+
+<hr>
+
+SELECT /*+ parallel(32) */MAFID,CENSUSAF FROM <span id="schemaResultValueMAFX10"></span>.PDMAFX WHERE MAFID IN (SELECT /*+ parallel(32) */MAFID FROM RT_MAFX.MAFCS_FILTER_FLAG
+where test_id='<span id="currentTestIDValue78"></span>')
+MINUS
+SELECT /*+ parallel(32) */MAFID,CENSUSAF FROM RT_MAFX.MAFCS_FILTER_FLAG WHERE MAFID IN (SELECT /*+ parallel(32) */MAFID FROM <span id="schemaResultValueMAFX11"></span>.PDMAFX)
+AND test_id='<span id="currentTestIDValue79"></span>';-- NO ROWS
+ 
+<hr>
+
+SELECT /*+ parallel(32) */MAFID,CENSUSAF FROM RT_MAFX.MAFCS_FILTER_FLAG WHERE MAFID IN (SELECT /*+ parallel(32) */MAFID FROM <span id="schemaResultValueMAFX12"></span>.PDMAFX)
+AND test_id='<span id="currentTestIDValue80"></span>'
+MINUS
+SELECT /*+ parallel(32) */MAFID,CENSUSAF FROM <span id="schemaResultValueMAFX13"></span>.PDMAFX WHERE MAFID IN (SELECT /*+ parallel(32) */MAFID FROM RT_MAFX.MAFCS_FILTER_FLAG
+where test_id='<span id="currentTestIDValue81"></span>');-- NO ROWS
+
+<hr>
+
+SELECT /*+ parallel(32) */MAFID,ENUMAF FROM <span id="schemaResultValueMAFX14"></span>.PDMAFX WHERE MAFID IN (SELECT /*+ parallel(32) */MAFID FROM RT_MAFX.ENUMAF_FILTER_FLAG
+where test_id='<span id="currentTestIDValue82"></span>')
+MINUS
+SELECT /*+ parallel(32) */MAFID,ENUMAF FROM RT_MAFX.ENUMAF_FILTER_FLAG WHERE MAFID IN (SELECT /*+ parallel(32) */MAFID FROM <span id="schemaResultValueMAFX15"></span>.PDMAFX)
+AND test_id='<span id="currentTestIDValue83"></span>';-- NO ROWS
+
+<hr>
+ 
+SELECT /*+ parallel(32) */MAFID,ENUMAF FROM RT_MAFX.ENUMAF_FILTER_FLAG WHERE MAFID IN (SELECT /*+ parallel(32) */MAFID FROM <span id="schemaResultValueMAFX16"></span>.PDMAFX)
+AND test_id='<span id="currentTestIDValue84"></span>'
+MINUS
+SELECT /*+ parallel(32) */MAFID,ENUMAF FROM <span id="schemaResultValueMAFX17"></span>.PDMAFX WHERE MAFID IN (SELECT /*+ parallel(32) */MAFID FROM RT_MAFX.ENUMAF_FILTER_FLAG
+where test_id='<span id="currentTestIDValue85"></span>');-- NO ROWS
+
+<hr>
+
+
+validation query for ACSAF:
+-----------------
+ACSAF-1
+----------
+
+select /*+ parallel(32) */* from <span id="schemaResultValueMAFX18"></span>.PDMAFX A
+where NVL(A.UNITSTAT,'X') NOT IN ('07','29')--A-1
+AND A.SURVMAFID IS NULL --A-2
+AND NVL(A.RESSTAT,'X')='1'--A-3
+AND NVL(A.GQHUFLAG,'X')='0' --A-4
+AND ((EXISTS
+    (SELECT 1
+     FROM <span id="schemaResultValueMAFX19"></span>.PDMAFOP WHERE oidpdmu = A.oid AND mafsrc  IN ('164','172','196','226','227') 
+     AND action IN ('A','C','H','K','M','V') AND opdate = (SELECT MAX(c.opdate)
+                                                           FROM <span id="schemaResultValueMAFX20"></span>.PDMAFOP C WHERE C.oidpdmu = A.oid
+                                                           AND C.mafsrc  IN ('164','172','196','226','227') 
+                                                           AND C.opdate > TO_DATE('01192021','MMDDYYYY'))))
+     OR NOT EXISTS
+     (SELECT 1
+      FROM <span id="schemaResultValueMAFX21"></span>.pdmafop 
+      WHERE oidpdmu = A.oid
+      AND mafsrc IN ('196','226','227') AND action IN ('D') AND opdate > TO_DATE('01192021','MMDDYYYY')))--A-5
+AND (NVL(A.census2020,'X') = 'Y' OR NVL(A.censurv,'X')='1') -- B
+AND EXISTS (select /*+ parallel(32) */1 from <span id="schemaResultValueMAFX22"></span>.PDMAFX B WHERE A.MAFID=B.MAFID AND ACSAF<>'1');--NO ROWS
+
+
+
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX23"></span>.PDMAFX A
+where NVL(A.UNITSTAT,'XX') NOT IN ('07','29')--A-1
+AND A.SURVMAFID IS NULL --A-2
+AND NVL(A.RESSTAT,'X')='1'--A-3
+AND NVL(A.GQHUFLAG,'X')='0' --A-4
+AND ((EXISTS
+    (SELECT /*+ parallel(32) */1
+     FROM <span id="schemaResultValueMAFX24"></span>.PDMAFOP WHERE oidpdmu = A.oid AND mafsrc  IN ('164','172','196','226','227') 
+     AND action IN ('A','C','H','K','M','V') AND opdate = (SELECT /*+ parallel(32) */MAX(c.opdate)
+                                                           FROM <span id="schemaResultValueMAFX25"></span>.PDMAFOP C WHERE C.oidpdmu = A.oid
+                                                           AND C.mafsrc  IN ('164','172','196','226','227') 
+                                                           AND C.opdate > TO_DATE('01192021','MMDDYYYY'))))
+     OR NOT EXISTS
+     (SELECT /*+ parallel(32) */1
+      FROM <span id="schemaResultValueMAFX26"></span>.pdmafop 
+      WHERE oidpdmu = A.oid
+      AND mafsrc IN ('196','226','227') AND action IN ('D') AND opdate > TO_DATE('01192021','MMDDYYYY')))--A-5
+AND (NVL(A.census2020,'X') = 'Y' OR NVL(A.censurv,'X')='1'); -- # ROWS
+
+
+
+SELECT /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX27"></span>.PDMAFX WHERE ACSAF='1'; -- # ROWS
+
+ACSAF-2
+----------
+
+select /*+ parallel(32) */* from <span id="schemaResultValueMAFX28"></span>.PDMAFX A
+where NVL(A.UNITSTAT,'XX') NOT IN ('07','29')--A-1
+AND A.SURVMAFID IS NULL --A-2
+AND NVL(A.RESSTAT,'X')='1'--A-3
+AND NVL(A.GQHUFLAG,'X')='0' --A-4
+AND ((EXISTS
+    (SELECT 1
+     FROM <span id="schemaResultValueMAFX29"></span>.PDMAFOP WHERE oidpdmu = A.oid AND mafsrc  IN ('164','172','196','226','227') 
+     AND action IN ('A','C','H','K','M','V') AND opdate = (SELECT MAX(c.opdate)
+                                                           FROM <span id="schemaResultValueMAFX30"></span>.PDMAFOP C WHERE C.oidpdmu = A.oid
+                                                           AND C.mafsrc  IN ('164','172','196','226','227') 
+                                                           AND C.opdate > TO_DATE('01192021','MMDDYYYY'))))
+     OR NOT EXISTS
+     (SELECT 1
+      FROM <span id="schemaResultValueMAFX31"></span>.pdmafop 
+      WHERE oidpdmu = A.oid
+      AND mafsrc IN ('196','226','227') AND action IN ('D') AND opdate > TO_DATE('01192021','MMDDYYYY')))--A-5
+AND EXISTS (SELECT 1
+            FROM <span id="schemaResultValueMAFX32"></span>.PDMAFOP
+            WHERE oidpdmu = A.oid AND mafsrc  = '225' AND action  IN ('A','R') AND opdate > TO_DATE('01192021','MMDDYYYY')) -- C
+AND EXISTS (select /*+ parallel(32) */1 from <span id="schemaResultValueMAFX33"></span>.PDMAFX B WHERE A.MAFID=B.MAFID AND ACSAF NOT IN ('1','2'));--NO ROWS
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX34"></span>.PDMAFX A
+where NVL(A.UNITSTAT,'XX') NOT IN ('07','29')--A-1
+AND A.SURVMAFID IS NULL --A-2
+AND NVL(A.RESSTAT,'X')='1'--A-3
+AND NVL(A.GQHUFLAG,'X')='0' --A-4
+AND ((EXISTS
+    (SELECT 1
+     FROM <span id="schemaResultValueMAFX35"></span>.PDMAFOP WHERE oidpdmu = A.oid AND mafsrc  IN ('164','172','196','226','227') 
+     AND action IN ('A','C','H','K','M','V') AND opdate = (SELECT MAX(c.opdate)
+                                                           FROM <span id="schemaResultValueMAFX36"></span>.PDMAFOP C WHERE C.oidpdmu = A.oid
+                                                           AND C.mafsrc  IN ('164','172','196','226','227') 
+                                                           AND C.opdate > TO_DATE('01192021','MMDDYYYY'))))
+     OR NOT EXISTS
+     (SELECT 1
+      FROM <span id="schemaResultValueMAFX37"></span>.pdmafop 
+      WHERE oidpdmu = A.oid
+      AND mafsrc IN ('196','226','227') AND action IN ('D') AND opdate > TO_DATE('01192021','MMDDYYYY')))--A-5
+AND EXISTS (SELECT 1
+            FROM <span id="schemaResultValueMAFX38"></span>.PDMAFOP
+            WHERE oidpdmu = A.oid AND mafsrc  = '225' AND action  IN ('A','R') AND opdate > TO_DATE('01192021','MMDDYYYY')); -- C --0
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX39"></span>.PDMAFX  WHERE ACSAF='2'; -- # ROWS
+
+
+
+ACSAF-3
+----------
+
+select /*+ parallel(32) */* from <span id="schemaResultValueMAFX40"></span>.PDMAFX A
+where NVL(A.UNITSTAT,'X') NOT IN ('07','29')--A-1
+AND A.SURVMAFID IS NULL --A-2
+AND NVL(A.RESSTAT,'X')='1'--A-3
+AND NVL(A.GQHUFLAG,'X')='0' --A-4
+AND ((EXISTS
+    (SELECT 1
+     FROM <span id="schemaResultValueMAFX41"></span>.PDMAFOP WHERE oidpdmu = A.oid AND mafsrc  IN ('164','172','196','226','227') 
+     AND action IN ('A','C','H','K','M','V') AND opdate = (SELECT MAX(c.opdate)
+                                                           FROM <span id="schemaResultValueMAFX42"></span>.PDMAFOP C WHERE C.oidpdmu = A.oid
+                                                           AND C.mafsrc  IN ('164','172','196','226','227') 
+                                                           AND C.opdate > TO_DATE('01192021','MMDDYYYY'))))
+     OR NOT EXISTS
+     (SELECT 1
+      FROM <span id="schemaResultValueMAFX43"></span>.pdmafop 
+      WHERE oidpdmu = A.oid
+      AND mafsrc IN ('196','226','227') AND action IN ('D') AND opdate > TO_DATE('01192021','MMDDYYYY')))--A-5
+AND NVL(A.IS2020DLV,'X') <> 'Y' -- D-1
+AND NVL(A.<span id="dsfResultUpper11"></span>,'X') IN ('1','3') -- D-2 --flag change
+AND ((A.<span id="dsfResultUpper12"></span> IN ('3') AND A.dsffal97 IN ('0','2') AND --flag change
+A.dsfspr98 IN ('0','2') AND
+A.dsffal98 IN ('0','2') AND
+A.dsffal99 IN ('0','2') AND
+A.dsffeb00 IN ('0','2') AND
+A.dsfspr00 IN ('0','2') AND
+A.dsffal00 IN ('0','2') AND
+A.dsfspr01 IN ('0','2') AND
+A.dsffal01 IN ('0','2') AND
+A.dsfspr02 IN ('0','2') AND
+A.dsffal02 IN ('0','2') AND
+A.dsfspr03 IN ('0','2') AND
+A.dsffal03 IN ('0','2') AND
+A.dsfspr04 IN ('0','2') AND
+A.dsffal04 IN ('0','2') AND
+A.dsfspr05 IN ('0','2') AND
+A.dsffal05 IN ('0','2') AND
+A.dsfspr06 IN ('0','2') AND
+A.dsffal06 IN ('0','2') AND
+A.dsfspr07 IN ('0','2') AND
+A.dsffal07 IN ('0','2') AND
+A.dsfspr08 IN ('0','2') AND
+A.dsffal08 IN ('0','2') AND
+A.dsfspr09 IN ('0','2') AND
+A.dsffal09 IN ('0','2') AND
+A.dsfspr10 IN ('0','2') AND
+A.dsffal10 IN ('0','2') AND
+A.dsfspr11 IN ('0','2') AND
+A.dsffal11 IN ('0','2') AND
+A.dsfspr12 IN ('0','2') AND
+A.dsffal12 IN ('0','2') AND
+A.dsfspr13 IN ('0','2') AND
+A.dsfspr14 IN ('0','2') AND
+A.dsffal14 IN ('0','2') AND
+A.dsfspr15 IN ('0','2') AND
+A.dsffal15 IN ('0','2') AND
+A.dsfspr16 IN ('0','2') AND
+A.dsffal16 IN ('0','2') AND
+A.dsfspr17 IN ('0','2') AND
+A.dsffal17 IN ('0','2') AND
+A.dsfspr18 IN ('0','2') AND
+A.dsffal18 IN ('0','2') AND
+A.dsfspr19 IN ('0','2') ) OR (A.<span id="dsfResultUpper13"></span> IN ('1') AND --flag change
+A.dsffal97 IN ('0','2','3') AND
+A.dsfspr98 IN ('0','2','3') AND
+A.dsffal98 IN ('0','2','3') AND
+A.dsffal99 IN ('0','2','3') AND
+A.dsffeb00 IN ('0','2','3') AND
+A.dsfspr00 IN ('0','2','3') AND
+A.dsffal00 IN ('0','2','3') AND
+A.dsfspr01 IN ('0','2','3') AND
+A.dsffal01 IN ('0','2','3') AND
+A.dsfspr02 IN ('0','2','3') AND
+A.dsffal02 IN ('0','2','3') AND
+A.dsfspr03 IN ('0','2','3') AND
+A.dsffal03 IN ('0','2','3') AND
+A.dsfspr04 IN ('0','2','3') AND
+A.dsffal04 IN ('0','2','3') AND
+A.dsfspr05 IN ('0','2','3') AND
+A.dsffal05 IN ('0','2','3') AND
+A.dsfspr06 IN ('0','2','3') AND
+A.dsffal06 IN ('0','2','3') AND
+A.dsfspr07 IN ('0','2','3') AND
+A.dsffal07 IN ('0','2','3') AND
+A.dsfspr08 IN ('0','2','3') AND
+A.dsffal08 IN ('0','2','3') AND
+A.dsfspr09 IN ('0','2','3') AND
+A.dsffal09 IN ('0','2','3') AND
+A.dsfspr10 IN ('0','2','3') AND
+A.dsffal10 IN ('0','2','3') AND
+A.dsfspr11 IN ('0','2','3') AND
+A.dsffal11 IN ('0','2','3') AND
+A.dsfspr12 IN ('0','2','3') AND
+A.dsffal12 IN ('0','2','3') AND
+A.dsfspr13 IN ('0','2','3') AND
+A.dsfspr14 IN ('0','2','3') AND
+A.dsffal14 IN ('0','2','3') AND
+A.dsfspr15 IN ('0','2','3') AND
+A.dsffal15 IN ('0','2','3') AND
+A.dsfspr16 IN ('0','2','3') AND
+A.dsffal16 IN ('0','2','3') AND
+A.dsfspr17 IN ('0','2','3') AND
+A.dsffal17 IN ('0','2','3') AND
+A.dsfspr18 IN ('0','2','3') AND
+A.dsffal18 IN ('0','2','3') AND
+A.dsfspr19 IN ('0','2','3')))-- D-3
+AND (A.CURBLK IS NULL              -- D-4a
+     OR (NVL(A.pdconvnew,' ') IN ('1','2','3')) -- D-4c
+     OR EXISTS
+        (SELECT * FROM <span id="schemaResultValueMAFX44"></span>.PDMAFX B, <span id="schemaResultValue5"></span>.tabblock cur --schema change
+          WHERE cur.oid = b.oidtb AND cur.vintage='<span id="tabblockvintage1"></span>' AND B.MAFID=A.MAFID --vintage change
+          AND (B.CURBLK IS NOT NULL and NVL(cur.act,' ') IN ('C1','C2','C3','Z0','B1','B2','B3','M3','MA','MB','MC','MD'))))    -- D-4b
+AND NVL(A.delpttype,' ') NOT IN ('I','J','K','L','M','N','O','P','1','2','3','4','5','6','7','8','X') -- D-5
+AND NVL(A.xtyp,' ') IN ('0','9')      -- D-6
+AND NVL(A.dsfrt,'X')<> 'R'            -- D-7 
+AND NVL(A.pdconvnew,'X') NOT IN ('4','5')    -- D-8
+AND (NVL(A.mailzipclass,'X')<> 'U' AND NVL(A.loczipclass,'X') <> 'U')     -- D-9
+AND EXISTS (select /*+ parallel(32) */1 from <span id="schemaResultValueMAFX45"></span>.PDMAFX B WHERE A.MAFID=B.MAFID AND ACSAF NOT IN ('1','2','3'));--NO ROWS
+
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX46"></span>.PDMAFX A
+where NVL(A.UNITSTAT,'X') NOT IN ('07','29')--A-1
+AND A.SURVMAFID IS NULL --A-2
+AND NVL(A.RESSTAT,'X')='1'--A-3
+AND NVL(A.GQHUFLAG,'X')='0' --A-4
+AND ((EXISTS
+    (SELECT 1
+     FROM <span id="schemaResultValueMAFX47"></span>.PDMAFOP WHERE oidpdmu = A.oid AND mafsrc  IN ('164','172','196','226','227') 
+     AND action IN ('A','C','H','K','M','V') AND opdate = (SELECT MAX(c.opdate)
+                                                           FROM <span id="schemaResultValueMAFX48"></span>.PDMAFOP C WHERE C.oidpdmu = A.oid
+                                                           AND C.mafsrc  IN ('164','172','196','226','227') 
+                                                           AND C.opdate > TO_DATE('01192021','MMDDYYYY'))))
+     OR NOT EXISTS
+     (SELECT 1
+      FROM <span id="schemaResultValueMAFX49"></span>.pdmafop 
+      WHERE oidpdmu = A.oid
+      AND mafsrc IN ('196','226','227') AND action IN ('D') AND opdate > TO_DATE('01192021','MMDDYYYY')))--A-5
+AND NVL(A.IS2020DLV,'X') <> 'Y' -- D-1
+AND NVL(A.<span id="dsfResultUpper14"></span>,'X') IN ('1','3') -- D-2 --flag change 
+AND ((A.<span id="dsfResultUpper15"></span> IN ('3') AND A.dsffal97 IN ('0','2') AND --flag change
+A.dsfspr98 IN ('0','2') AND
+A.dsffal98 IN ('0','2') AND
+A.dsffal99 IN ('0','2') AND
+A.dsffeb00 IN ('0','2') AND
+A.dsfspr00 IN ('0','2') AND
+A.dsffal00 IN ('0','2') AND
+A.dsfspr01 IN ('0','2') AND
+A.dsffal01 IN ('0','2') AND
+A.dsfspr02 IN ('0','2') AND
+A.dsffal02 IN ('0','2') AND
+A.dsfspr03 IN ('0','2') AND
+A.dsffal03 IN ('0','2') AND
+A.dsfspr04 IN ('0','2') AND
+A.dsffal04 IN ('0','2') AND
+A.dsfspr05 IN ('0','2') AND
+A.dsffal05 IN ('0','2') AND
+A.dsfspr06 IN ('0','2') AND
+A.dsffal06 IN ('0','2') AND
+A.dsfspr07 IN ('0','2') AND
+A.dsffal07 IN ('0','2') AND
+A.dsfspr08 IN ('0','2') AND
+A.dsffal08 IN ('0','2') AND
+A.dsfspr09 IN ('0','2') AND
+A.dsffal09 IN ('0','2') AND
+A.dsfspr10 IN ('0','2') AND
+A.dsffal10 IN ('0','2') AND
+A.dsfspr11 IN ('0','2') AND
+A.dsffal11 IN ('0','2') AND
+A.dsfspr12 IN ('0','2') AND
+A.dsffal12 IN ('0','2') AND
+A.dsfspr13 IN ('0','2') AND
+A.dsfspr14 IN ('0','2') AND
+A.dsffal14 IN ('0','2') AND
+A.dsfspr15 IN ('0','2') AND
+A.dsffal15 IN ('0','2') AND
+A.dsfspr16 IN ('0','2') AND
+A.dsffal16 IN ('0','2') AND
+A.dsfspr17 IN ('0','2') AND
+A.dsffal17 IN ('0','2') AND
+A.dsfspr18 IN ('0','2') AND
+A.dsffal18 IN ('0','2') AND
+A.dsfspr19 IN ('0','2') ) OR (A.<span id="dsfResultUpper16"></span> IN ('1') AND --flag change
+A.dsffal97 IN ('0','2','3') AND
+A.dsfspr98 IN ('0','2','3') AND
+A.dsffal98 IN ('0','2','3') AND
+A.dsffal99 IN ('0','2','3') AND
+A.dsffeb00 IN ('0','2','3') AND
+A.dsfspr00 IN ('0','2','3') AND
+A.dsffal00 IN ('0','2','3') AND
+A.dsfspr01 IN ('0','2','3') AND
+A.dsffal01 IN ('0','2','3') AND
+A.dsfspr02 IN ('0','2','3') AND
+A.dsffal02 IN ('0','2','3') AND
+A.dsfspr03 IN ('0','2','3') AND
+A.dsffal03 IN ('0','2','3') AND
+A.dsfspr04 IN ('0','2','3') AND
+A.dsffal04 IN ('0','2','3') AND
+A.dsfspr05 IN ('0','2','3') AND
+A.dsffal05 IN ('0','2','3') AND
+A.dsfspr06 IN ('0','2','3') AND
+A.dsffal06 IN ('0','2','3') AND
+A.dsfspr07 IN ('0','2','3') AND
+A.dsffal07 IN ('0','2','3') AND
+A.dsfspr08 IN ('0','2','3') AND
+A.dsffal08 IN ('0','2','3') AND
+A.dsfspr09 IN ('0','2','3') AND
+A.dsffal09 IN ('0','2','3') AND
+A.dsfspr10 IN ('0','2','3') AND
+A.dsffal10 IN ('0','2','3') AND
+A.dsfspr11 IN ('0','2','3') AND
+A.dsffal11 IN ('0','2','3') AND
+A.dsfspr12 IN ('0','2','3') AND
+A.dsffal12 IN ('0','2','3') AND
+A.dsfspr13 IN ('0','2','3') AND
+A.dsfspr14 IN ('0','2','3') AND
+A.dsffal14 IN ('0','2','3') AND
+A.dsfspr15 IN ('0','2','3') AND
+A.dsffal15 IN ('0','2','3') AND
+A.dsfspr16 IN ('0','2','3') AND
+A.dsffal16 IN ('0','2','3') AND
+A.dsfspr17 IN ('0','2','3') AND
+A.dsffal17 IN ('0','2','3') AND
+A.dsfspr18 IN ('0','2','3') AND
+A.dsffal18 IN ('0','2','3') AND
+A.dsfspr19 IN ('0','2','3')))-- D-3
+AND (A.CURBLK IS NULL              -- D-4a
+     OR (NVL(A.pdconvnew,' ') IN ('1','2','3')) -- D-4c
+     OR EXISTS
+        (SELECT * FROM <span id="schemaResultValueMAFX50"></span>.PDMAFX B, <span id="schemaResultValue6"></span>.tabblock cur  --schema change
+          WHERE cur.oid = b.oidtb AND cur.vintage='<span id="tabblockvintage2"></span>' AND B.MAFID=A.MAFID --vintage change
+          AND (B.CURBLK IS NOT NULL and NVL(cur.act,' ') IN ('C1','C2','C3','Z0','B1','B2','B3','M3','MA','MB','MC','MD'))))    -- D-4b
+AND NVL(A.delpttype,' ') NOT IN ('I','J','K','L','M','N','O','P','1','2','3','4','5','6','7','8','X') -- D-5
+AND NVL(A.xtyp,' ') IN ('0','9')      -- D-6
+AND NVL(A.dsfrt,'X')<> 'R'            -- D-7 
+AND NVL(A.pdconvnew,'X') NOT IN ('4','5')    -- D-8
+AND (NVL(A.mailzipclass,'X')<> 'U' AND NVL(A.loczipclass,'X') <> 'U')     -- D-9  
+AND NVL(ACSAF,'XX') not in ('1','2'); --2
+
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX51"></span>.PDMAFX WHERE ACSAF='3'; --2
+
+
+
+ACSAF-4
+---------
+select /*+ parallel(32) */* from <span id="schemaResultValueMAFX52"></span>.PDMAFX A
+where NVL(A.UNITSTAT,'X') NOT IN ('07','29')--A-1
+AND A.SURVMAFID IS NULL --A-2
+AND NVL(A.RESSTAT,'X')='1'--A-3
+AND NVL(A.GQHUFLAG,'X')='0' --A-4
+AND ((EXISTS
+    (SELECT 1
+     FROM <span id="schemaResultValueMAFX53"></span>.PDMAFOP WHERE oidpdmu = A.oid AND mafsrc  IN ('164','172','196','226','227') 
+     AND action IN ('A','C','H','K','M','V') AND opdate = (SELECT MAX(c.opdate)
+                                                           FROM <span id="schemaResultValueMAFX54"></span>.PDMAFOP C WHERE C.oidpdmu = A.oid
+                                                           AND C.mafsrc  IN ('164','172','196','226','227') 
+                                                           AND C.opdate > TO_DATE('01192021','MMDDYYYY'))))
+     OR NOT EXISTS
+     (SELECT 1
+      FROM <span id="schemaResultValueMAFX55"></span>.pdmafop 
+      WHERE oidpdmu = A.oid
+      AND mafsrc IN ('196','226','227') AND action IN ('D') AND opdate > TO_DATE('01192021','MMDDYYYY')))--A-5
+AND NVL(A.IS2020DLV,'X') = 'Y'             -- E-1
+AND NVL(A.census2020,'X') = 'N'        -- E-2
+AND NVL(A.<span id="dsfResultUpper17"></span>,'X') = '1'                -- E-3 --flag change
+AND NVL(A.delpttype,'XX') IN ('A','B','C','D','E','F','G','H') -- E-4
+--AND A.dsfbasealt <> 'A'        
+AND NVL(A.dsfrt,'X') <> 'R'            -- E-5
+AND NVL(A.pdconvnew,'X') NOT IN ('4','5')     -- E-6
+AND (NVL(A.mailzipclass,' ') <> 'U' AND NVL(A.loczipclass,' ') <> 'U') -- E-7
+AND (A.CENSUS2010='Y' or NVL(A.ISUCMDLV,'X')<>'Y') --E-8 E8 added
+AND EXISTS (select /*+ parallel(32) */1 from <span id="schemaResultValueMAFX56"></span>.PDMAFX B WHERE A.MAFID=B.MAFID AND ACSAF NOT IN ('1','2','3','4') );--NO ROWS
+
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX57"></span>.PDMAFX A
+where NVL(A.UNITSTAT,'X') NOT IN ('07','29')--A-1
+AND A.SURVMAFID IS NULL --A-2
+AND NVL(A.RESSTAT,'X')='1'--A-3
+AND NVL(A.GQHUFLAG,'X')='0' --A-4
+AND ((EXISTS
+    (SELECT 1
+     FROM <span id="schemaResultValueMAFX58"></span>.PDMAFOP WHERE oidpdmu = A.oid AND mafsrc  IN ('164','172','196','226','227') 
+     AND action IN ('A','C','H','K','M','V') AND opdate = (SELECT MAX(c.opdate)
+                                                           FROM <span id="schemaResultValueMAFX59"></span>.PDMAFOP C WHERE C.oidpdmu = A.oid
+                                                           AND C.mafsrc  IN ('164','172','196','226','227') 
+                                                           AND C.opdate > TO_DATE('01192021','MMDDYYYY'))))
+     OR NOT EXISTS
+     (SELECT 1
+      FROM <span id="schemaResultValueMAFX60"></span>.pdmafop 
+      WHERE oidpdmu = A.oid
+      AND mafsrc IN ('196','226','227') AND action IN ('D') AND opdate > TO_DATE('01192021','MMDDYYYY')))--A-5
+AND NVL(A.IS2020DLV,'X') = 'Y'             -- E-1
+AND NVL(A.census2020,'X') = 'N'        -- E-2
+AND NVL(A.<span id="dsfResultUpper18"></span>,'X') = '1'                -- E-3 --flag change
+AND NVL(A.delpttype,'XX') IN ('A','B','C','D','E','F','G','H') -- E-4
+--AND A.dsfbasealt <> 'A'        
+AND NVL(A.dsfrt,'X') <> 'R'            -- E-5
+AND NVL(A.pdconvnew,'X') NOT IN ('4','5')     -- E-6
+AND (NVL(A.mailzipclass,' ') <> 'U' AND NVL(A.loczipclass,' ') <> 'U') -- E-7
+AND (A.CENSUS2010='Y' or NVL(A.ISUCMDLV,'X')<>'Y') --E-8 E8 added
+AND NVL(ACSAF,'XX') not in ('1','2','3'); --5625
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX61"></span>.PDMAFX  WHERE ACSAF='4'; --5625
+
+
+ACSAF-5
+---------
+select /*+ parallel(32) */* from <span id="schemaResultValueMAFX62"></span>.PDMAFX A
+where NVL(A.UNITSTAT,'X') NOT IN ('07','29')--A-1
+AND A.SURVMAFID IS NULL --A-2
+AND NVL(A.RESSTAT,'X')='1'--A-3
+AND NVL(A.GQHUFLAG,'X')='0' --A-4
+AND ((EXISTS
+    (SELECT 1
+     FROM <span id="schemaResultValueMAFX63"></span>.PDMAFOP WHERE oidpdmu = A.oid AND mafsrc  IN ('164','172','196','226','227') 
+     AND action IN ('A','C','H','K','M','V') AND opdate = (SELECT MAX(c.opdate)
+                                                           FROM <span id="schemaResultValueMAFX64"></span>.PDMAFOP C WHERE C.oidpdmu = A.oid
+                                                           AND C.mafsrc  IN ('164','172','196','226','227') 
+                                                           AND C.opdate > TO_DATE('01192021','MMDDYYYY'))))
+     OR NOT EXISTS
+     (SELECT 1
+      FROM <span id="schemaResultValueMAFX65"></span>.pdmafop 
+      WHERE oidpdmu = A.oid
+      AND mafsrc IN ('196','226','227') AND action IN ('D') AND opdate > TO_DATE('01192021','MMDDYYYY')))--A-5
+AND 
+EXISTS (SELECT /*+ parallel(32) */1
+        FROM <span id="schemaResultValueMAFX66"></span>.pdmafop
+        WHERE oidpdmu = A.oid
+        AND mafsrc  IN ('164','172','196','226','227')
+        AND action IN ('A', 'C', 'H', 'K', 'M', 'V')
+        AND opdate = (SELECT MAX(v.opdate)
+                      FROM <span id="schemaResultValueMAFX67"></span>.pdmafop v
+                      WHERE v.oidpdmu = A.oid
+                      AND v.mafsrc  IN ('164','172','196','226','227')
+                      AND v.opdate > TO_DATE('01192021','MMDDYYYY')))--F
+AND EXISTS (select /*+ parallel(32) */1 from <span id="schemaResultValueMAFX68"></span>.PDMAFX B WHERE A.MAFID=B.MAFID AND ACSAF NOT IN ('1','2','3','4','5') );-- NO ROWS
+
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX69"></span>.PDMAFX A
+where NVL(A.UNITSTAT,'X') NOT IN ('07','29')--A-1
+AND A.SURVMAFID IS NULL --A-2
+AND NVL(A.RESSTAT,'X')='1'--A-3
+AND NVL(A.GQHUFLAG,'X')='0' --A-4
+AND ((EXISTS
+    (SELECT 1
+     FROM <span id="schemaResultValueMAFX70"></span>.PDMAFOP WHERE oidpdmu = A.oid AND mafsrc  IN ('164','172','196','226','227') 
+     AND action IN ('A','C','H','K','M','V') AND opdate = (SELECT MAX(c.opdate)
+                                                           FROM <span id="schemaResultValueMAFX71"></span>.PDMAFOP C WHERE C.oidpdmu = A.oid
+                                                           AND C.mafsrc  IN ('164','172','196','226','227') 
+                                                           AND C.opdate > TO_DATE('01192021','MMDDYYYY'))))
+     OR NOT EXISTS
+     (SELECT 1
+      FROM <span id="schemaResultValueMAFX72"></span>.pdmafop 
+      WHERE oidpdmu = A.oid
+      AND mafsrc IN ('196','226','227') AND action IN ('D') AND opdate > TO_DATE('01192021','MMDDYYYY')))--A-5
+AND 
+EXISTS (SELECT /*+ parallel(32) */1
+        FROM <span id="schemaResultValueMAFX73"></span>.pdmafop
+        WHERE oidpdmu = A.oid
+        AND mafsrc  IN ('164','172','196','226','227')
+        AND action IN ('A', 'C', 'H', 'K', 'M', 'V')
+        AND opdate = (SELECT MAX(v.opdate)
+                      FROM <span id="schemaResultValueMAFX74"></span>.pdmafop v
+                      WHERE v.oidpdmu = A.oid
+                      AND v.mafsrc  IN ('164','172','196','226','227')
+                      AND v.opdate > TO_DATE('01192021','MMDDYYYY')))--F
+AND NVL(ACSAF,'XX') not in ('1','2','3','4'); 
+
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX75"></span>.PDMAFX WHERE ACSAF='5';--0
+
+ACSAF-6
+---------
+
+select /*+ parallel(32) */* from <span id="schemaResultValueMAFX76"></span>.PDMAFX ADDR
+where NVL(ADDR.UNITSTAT,'X') NOT IN ('07','29')--A-1
+AND ADDR.SURVMAFID IS NULL --A-2
+AND NVL(ADDR.RESSTAT,'X')='1'--A-3
+AND NVL(ADDR.GQHUFLAG,'X')='0' --A-4
+AND ((EXISTS
+    (SELECT 1
+     FROM <span id="schemaResultValueMAFX77"></span>.PDMAFOP WHERE oidpdmu = ADDR.oid AND mafsrc  IN ('164','172','196','226','227') 
+     AND action IN ('A','C','H','K','M','V') AND opdate = (SELECT MAX(c.opdate)
+                                                           FROM <span id="schemaResultValueMAFX78"></span>.PDMAFOP C WHERE C.oidpdmu = ADDR.oid
+                                                           AND C.mafsrc  IN ('164','172','196','226','227') 
+                                                           AND C.opdate > TO_DATE('01192021','MMDDYYYY'))))
+     OR NOT EXISTS
+     (SELECT 1
+      FROM <span id="schemaResultValueMAFX79"></span>.pdmafop 
+      WHERE oidpdmu = ADDR.oid
+      AND mafsrc IN ('196','226','227') AND action IN ('D') AND opdate > TO_DATE('01192021','MMDDYYYY')))--A-5
+AND (NVL(addr.dsffal97, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr98, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal98, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal99, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffeb00, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr00, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal00, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr01, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal01, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr02, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal02, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr03, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal03, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr04, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal04, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr05, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal05, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr06, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal06, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr07, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal07, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr08, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal08, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr09, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal09, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr10, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal10, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr11, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal11, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr12, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal12, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr13, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal13, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr14, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal14, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr15, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal15, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr16, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal16, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr17, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal17, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr18, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal18, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr19, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal19, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr20, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr21, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal21, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr22, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal22, ' ') IN ('0',' '))-- G-2
+and exists
+(select /*+ parallel(32) */* from <span id="schemaResultValueMAFX80"></span>.PDMAFOP WHERE mafsrc IN ('201', '202') AND OIDPDMU=ADDR.OID) -- G-1
+and EXISTS (SELECT 1
+            FROM <span id="schemaResultValueMAFX81"></span>.PDmafop
+            WHERE oidpdmu = addr.oid
+            AND mafsrc  IN ('164','172','196','226','227')
+            AND opdate > TO_DATE('01192021','MMDDYYYY')
+           )  -- G-3
+AND ADDR.curblk IS NOT NULL --G-4
+AND NVL(ADDR.unitstat,'XX') NOT IN ('05') -- G-5
+AND EXISTS (select /*+ parallel(32) */1 from <span id="schemaResultValueMAFX82"></span>.PDMAFX B WHERE ADDR.MAFID=B.MAFID AND ACSAF NOT IN ('1','2','3','4','5','6'));--NO ROWS
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX83"></span>.PDMAFX ADDR
+where NVL(ADDR.UNITSTAT,'X') NOT IN ('07','29')--A-1
+AND ADDR.SURVMAFID IS NULL --A-2
+AND NVL(ADDR.RESSTAT,'X')='1'--A-3
+AND NVL(ADDR.GQHUFLAG,'X')='0' --A-4
+AND ((EXISTS
+    (SELECT 1
+     FROM <span id="schemaResultValueMAFX84"></span>.PDMAFOP WHERE oidpdmu = ADDR.oid AND mafsrc  IN ('164','172','196','226','227') 
+     AND action IN ('A','C','H','K','M','V') AND opdate = (SELECT MAX(c.opdate)
+                                                           FROM <span id="schemaResultValueMAFX85"></span>.PDMAFOP C WHERE C.oidpdmu = ADDR.oid
+                                                           AND C.mafsrc  IN ('164','172','196','226','227') 
+                                                           AND C.opdate > TO_DATE('01192021','MMDDYYYY'))))
+     OR NOT EXISTS
+     (SELECT 1
+      FROM <span id="schemaResultValueMAFX86"></span>.pdmafop 
+      WHERE oidpdmu = ADDR.oid
+      AND mafsrc IN ('196','226','227') AND action IN ('D') AND opdate > TO_DATE('01192021','MMDDYYYY')))--A-5
+AND (NVL(addr.dsffal97, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr98, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal98, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal99, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffeb00, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr00, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal00, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr01, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal01, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr02, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal02, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr03, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal03, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr04, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal04, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr05, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal05, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr06, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal06, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr07, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal07, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr08, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal08, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr09, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal09, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr10, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal10, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr11, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal11, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr12, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal12, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr13, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal13, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr14, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal14, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr15, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal15, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr16, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal16, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr17, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal17, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr18, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal18, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr19, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal19, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr20, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr21, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal21, ' ') IN ('0',' ')
+                                AND NVL(addr.dsfspr22, ' ') IN ('0',' ')
+                                AND NVL(addr.dsffal22, ' ') IN ('0',' '))-- G-2
+and exists
+(select /*+ parallel(32) */* from <span id="schemaResultValueMAFX87"></span>.PDMAFOP WHERE mafsrc IN ('201', '202') AND OIDPDMU=ADDR.OID) -- G-1
+and EXISTS (SELECT 1
+            FROM <span id="schemaResultValueMAFX88"></span>.PDmafop
+            WHERE oidpdmu = addr.oid
+            AND mafsrc  IN ('164','172','196','226','227')
+            AND opdate > TO_DATE('01192021','MMDDYYYY')
+           )  -- G-3
+AND ADDR.curblk IS NOT NULL --G-4
+AND NVL(ADDR.unitstat,'XX') NOT IN ('05') -- G-5
+AND NVL(ACSAF,'XX') not in ('1','2','3','4','5');--0
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX89"></span>.PDMAFX WHERE ACSAF='6';--0 rows
+
+ACSAF-A
+---------
+select /*+ parallel(32) */* from <span id="schemaResultValueMAFX90"></span>.PDMAFX spgq
+WHERE NVL(spgq.gqhuflag,'X') = '2' --H-1
+and (NVL(spgq.gqtypcur, '999') NOT IN ('999', '0') AND LENGTH(spgq.gqtypcur) = 3) -- H-2
+AND NVL(spgq.unitstat,'XX') NOT IN ('07','29') AND spgq.survmafid IS NULL    -- H-3 and H-4
+AND NOT EXISTS (SELECT 1 FROM <span id="schemaResultValueMAFX91"></span>.PDMAFOP
+            WHERE oidpdmu = spgq.oid
+            and mafsrc IN('164','172','196','226','227')
+            AND action  IN ('B','D', 'H', 'L', 'O')
+            AND opdate = (SELECT MAX(v.opdate)
+                          FROM <span id="schemaResultValueMAFX92"></span>.pdmafop v
+                          WHERE v.oidpdmu = spgq.oid
+			              AND v.mafsrc  IN ('164','172','196','226','227')
+                          AND v.opdate > TO_DATE('01192021','MMDDYYYY')))--H-5
+AND NVL(SPGQ.censtat2020,'X') = '8'--I
+AND EXISTS (select /*+ parallel(32) */1 from <span id="schemaResultValueMAFX93"></span>.PDMAFX B WHERE SPGQ.MAFID=B.MAFID AND ACSAF NOT IN ('0','1','2','3','4','5','6','A') );--NO ROWS
+
+
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX94"></span>.PDMAFX spgq
+WHERE NVL(spgq.gqhuflag,'X') = '2' --H-1
+and (NVL(spgq.gqtypcur, '999') NOT IN ('999', '0') AND LENGTH(spgq.gqtypcur) = 3) -- H-2
+AND NVL(spgq.unitstat,'XX') NOT IN ('07','29') AND spgq.survmafid IS NULL    -- H-3 and H-4
+AND NOT EXISTS (SELECT 1 FROM <span id="schemaResultValueMAFX95"></span>.PDMAFOP
+            WHERE oidpdmu = spgq.oid
+            and mafsrc IN('164','172','196','226','227')
+            AND action  IN ('B','D', 'H', 'L', 'O')
+            AND opdate = (SELECT MAX(v.opdate)
+                          FROM <span id="schemaResultValueMAFX96"></span>.pdmafop v
+                          WHERE v.oidpdmu = spgq.oid
+			              AND v.mafsrc  IN ('164','172','196','226','227')
+                          AND v.opdate > TO_DATE('01192021','MMDDYYYY')))--H-5
+AND NVL(SPGQ.censtat2020,'X') = '8'--34123
+AND ACSAF NOT IN ('0','1','2','3','4','5','6') ;
+--AND ACSAF='A'; --210
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX97"></span>.PDMAFX WHERE ACSAF='A';--210
+
+ACSAF-B
+---------
+select /*+ parallel(32) */* from <span id="schemaResultValueMAFX98"></span>.PDMAFX spgq
+WHERE NVL(spgq.gqhuflag,'X') = '2' --H-1
+and (NVL(spgq.gqtypcur, '999') NOT IN ('999', '0') AND LENGTH(spgq.gqtypcur) = 3) -- H-2
+AND NVL(spgq.unitstat,'XX') NOT IN ('07','29') AND spgq.survmafid IS NULL    -- H-3 and H-4
+AND NOT EXISTS (SELECT 1 FROM <span id="schemaResultValueMAFX99"></span>.PDMAFOP
+            WHERE oidpdmu = spgq.oid
+            and mafsrc IN('164','172','196','226','227')
+            AND action  IN ('B','D', 'H', 'L', 'O')
+            AND opdate = (SELECT MAX(v.opdate)
+                          FROM <span id="schemaResultValueMAFX100"></span>.pdmafop v
+                          WHERE v.oidpdmu = spgq.oid
+			              AND v.mafsrc  IN ('164','172','196','226','227')
+                          AND v.opdate > TO_DATE('01192021','MMDDYYYY')))--H-5
+AND NVL(SPGQ.censtat2020,'X') = '3'--J
+AND EXISTS (select /*+ parallel(32) */1 from <span id="schemaResultValueMAFX101"></span>.PDMAFX B WHERE SPGQ.MAFID=B.MAFID AND ACSAF NOT IN ('0','1','2','3','4','5','6','A','B') );--NO ROWS
+
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX102"></span>.PDMAFX spgq
+WHERE NVL(spgq.gqhuflag,'X') = '2' --H-1
+and (NVL(spgq.gqtypcur, '999') NOT IN ('999', '0') AND LENGTH(spgq.gqtypcur) = 3) -- H-2
+AND NVL(spgq.unitstat,'XX') NOT IN ('07','29') AND spgq.survmafid IS NULL    -- H-3 and H-4
+AND NOT EXISTS (SELECT 1 FROM <span id="schemaResultValueMAFX103"></span>.PDMAFOP
+            WHERE oidpdmu = spgq.oid
+            and mafsrc IN('164','172','196','226','227')
+            AND action  IN ('B','D', 'H', 'L', 'O')
+            AND opdate = (SELECT MAX(v.opdate)
+                          FROM <span id="schemaResultValueMAFX104"></span>.pdmafop v
+                          WHERE v.oidpdmu = spgq.oid
+			              AND v.mafsrc  IN ('164','172','196','226','227')
+                          AND v.opdate > TO_DATE('01192021','MMDDYYYY')))--H-5
+AND NVL(SPGQ.censtat2020,'X') = '3'--J
+AND ACSAF NOT IN ('0','1','2','3','4','5','6','A') ;
+--AND ACSAF='B';--28 
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX105"></span>.PDMAFX WHERE ACSAF='B';--28
+
+ACSAF-C
+---------
+
+select /*+ parallel(32) */* from <span id="schemaResultValueMAFX106"></span>.PDMAFX spgq
+WHERE NVL(spgq.gqhuflag,'X') = '2' --H-1
+and (NVL(spgq.gqtypcur, '999') NOT IN ('999', '0') AND LENGTH(spgq.gqtypcur) = 3) -- H-2
+AND NVL(spgq.unitstat,'XX') NOT IN ('07','29') AND spgq.survmafid IS NULL    -- H-3 and H-4
+AND NOT EXISTS (SELECT 1 FROM <span id="schemaResultValueMAFX107"></span>.PDMAFOP
+            WHERE oidpdmu = spgq.oid
+            and mafsrc IN('164','172','196','226','227')
+            AND action  IN ('B','D', 'H', 'L', 'O')
+            AND opdate = (SELECT MAX(v.opdate)
+                          FROM <span id="schemaResultValueMAFX108"></span>.pdmafop v
+                          WHERE v.oidpdmu = spgq.oid
+			              AND v.mafsrc  IN ('164','172','196','226','227')
+                          AND v.opdate > TO_DATE('01192021','MMDDYYYY')))--H-5
+AND EXISTS (SELECT 1
+            FROM <span id="schemaResultValueMAFX109"></span>.pdmafop
+            WHERE oidpdmu = SPGQ.oid
+            AND mafsrc  = '225'
+            AND action  IN ('A', 'R')
+            AND opdate > TO_DATE('01192021','MMDDYYYY'))--K-1
+AND EXISTS (select /*+ parallel(32) */1 from <span id="schemaResultValueMAFX110"></span>.PDMAFX B WHERE SPGQ.MAFID=B.MAFID AND ACSAF NOT IN ('0','1','2','3','4','5','6','A','B','C') );--K--NO ROWS
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX111"></span>.PDMAFX spgq
+WHERE NVL(spgq.gqhuflag,'X') = '2' --H-1
+and (NVL(spgq.gqtypcur, '999') NOT IN ('999', '0') AND LENGTH(spgq.gqtypcur) = 3) -- H-2
+AND NVL(spgq.unitstat,'XX') NOT IN ('07','29') AND spgq.survmafid IS NULL    -- H-3 and H-4
+AND NOT EXISTS (SELECT 1 FROM <span id="schemaResultValueMAFX112"></span>.PDMAFOP
+            WHERE oidpdmu = spgq.oid
+            and mafsrc IN('164','172','196','226','227')
+            AND action  IN ('B','D', 'H', 'L', 'O')
+            AND opdate = (SELECT MAX(v.opdate)
+                          FROM <span id="schemaResultValueMAFX113"></span>.pdmafop v
+                          WHERE v.oidpdmu = spgq.oid
+			              AND v.mafsrc  IN ('164','172','196','226','227')
+                          AND v.opdate > TO_DATE('01192021','MMDDYYYY')))--H-5
+AND EXISTS (SELECT 1
+            FROM <span id="schemaResultValueMAFX114"></span>.pdmafop
+            WHERE oidpdmu = SPGQ.oid
+            AND mafsrc  = '225'
+            AND action  IN ('A', 'R')
+            AND opdate > TO_DATE('01192021','MMDDYYYY'))--K-1
+AND ACSAF NOT IN ('0','1','2','3','4','5','6','A','B') ;
+
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX115"></span>.PDMAFX WHERE ACSAF='C';--0
+
+ACSAF-D
+---------
+ 
+select /*+ parallel(32) */* from <span id="schemaResultValueMAFX116"></span>.PDMAFX spgq
+WHERE NVL(spgq.gqhuflag,'X') = '2' --H-1
+and (NVL(spgq.gqtypcur, '999') NOT IN ('999', '0') AND LENGTH(spgq.gqtypcur) = 3) -- H-2
+AND NVL(spgq.unitstat,'XX') NOT IN ('07','29') AND spgq.survmafid IS NULL    -- H-3 and H-4
+AND NOT EXISTS (SELECT 1 FROM <span id="schemaResultValueMAFX117"></span>.PDMAFOP
+            WHERE oidpdmu = spgq.oid
+            and mafsrc IN('164','172','196','226','227')
+            AND action  IN ('B','D', 'H', 'L', 'O')
+            AND opdate = (SELECT MAX(v.opdate)
+                          FROM <span id="schemaResultValueMAFX118"></span>.pdmafop v
+                          WHERE v.oidpdmu = spgq.oid
+			              AND v.mafsrc  IN ('164','172','196','226','227')
+                          AND v.opdate > TO_DATE('01192021','MMDDYYYY')))--H-5
+AND EXISTS (SELECT 1
+        FROM <span id="schemaResultValueMAFX119"></span>.PDMAFOP
+        WHERE oidpdmu = spgq.oid
+        AND mafsrc  IN ('164','172','196','226','227')
+        AND action IN ('A', 'C', 'G', 'K', 'M', 'V')
+        AND opdate = (SELECT MAX(v.opdate)
+                      FROM <span id="schemaResultValueMAFX120"></span>.PDMAFOP v
+                      WHERE v.oidpdmu = spgq.oid
+				      AND v.mafsrc  IN ('164','172','196','226','227')
+                      AND v.opdate > TO_DATE('01192021','MMDDYYYY')))--L
+and nvl(SPGQ.gqtypcur,'x')<> '703'
+AND EXISTS (select /*+ parallel(32) */1 from <span id="schemaResultValueMAFX121"></span>.PDMAFX B WHERE SPGQ.MAFID=B.MAFID AND ACSAF NOT IN ('A','B','C','D') );--NO ROWS
+
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX122"></span>.PDMAFX spgq
+WHERE NVL(spgq.gqhuflag,'X') = '2' --H-1
+and (NVL(spgq.gqtypcur, '999') NOT IN ('999', '0') AND LENGTH(spgq.gqtypcur) = 3) -- H-2
+AND NVL(spgq.unitstat,'XX') NOT IN ('07','29') AND spgq.survmafid IS NULL    -- H-3 and H-4
+AND NOT EXISTS (SELECT 1 FROM <span id="schemaResultValueMAFX123"></span>.PDMAFOP
+            WHERE oidpdmu = spgq.oid
+            and mafsrc IN('164','172','196','226','227')
+            AND action  IN ('B','D', 'H', 'L', 'O')
+            AND opdate = (SELECT MAX(v.opdate)
+                          FROM <span id="schemaResultValueMAFX124"></span>.pdmafop v
+                          WHERE v.oidpdmu = spgq.oid
+			              AND v.mafsrc  IN ('164','172','196','226','227')
+                          AND v.opdate > TO_DATE('01192021','MMDDYYYY')))--H-5
+AND EXISTS (SELECT 1
+        FROM <span id="schemaResultValueMAFX125"></span>.PDMAFOP
+        WHERE oidpdmu = spgq.oid
+        AND mafsrc  IN ('164','172','196','226','227')
+        AND action IN ('A', 'C', 'G', 'K', 'M', 'V')
+        AND opdate = (SELECT MAX(v.opdate)
+                      FROM <span id="schemaResultValueMAFX126"></span>.PDMAFOP v
+                      WHERE v.oidpdmu = spgq.oid
+				      AND v.mafsrc  IN ('164','172','196','226','227')
+                      AND v.opdate > TO_DATE('01192021','MMDDYYYY')))--L
+and nvl(SPGQ.gqtypcur,'x')<> '703' 
+AND ACSAF not in ('A','B','C');--3
+
+
+select /*+ parallel(32) */COUNT(1) from <span id="schemaResultValueMAFX127"></span>.PDMAFX WHERE ACSAF='D';--3
+			</pre>
+        </div>
+        <button class="collapsible">3.2.2. APV AUTO RUN VALIDATION</button>
+        <div id="content-apv_run_a" class="content">
+        <button class="copy-btn" onclick="copyContent('content-apv_run_a')">Copy</button>
+		<hr>
+		<pre>
+		APV Run Auto Validation
+		
+		@C:\test\APV_RUN_Validation_auto_script.sql <span id="currentTestIDValue86"></span> <span id="dbInstanceValue41"></span>
+		
+		Output File : C:\test\APV_RUN_Validation_auto_output.txt
+		</pre>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<div id="collapsibleSections2" style="display: none;">
+<h2>TAR Validation</h2>
+ <button class="collapsible">1. CENAF TAR VALIDATION</button>
+        <div id="content-cenaf_tar_v" class="content">
+        <button class="copy-btn" onclick="copyContent('content-cenaf_tar_v')">Copy</button>
+		<hr>
+	<pre>
+
+<pre>
+
+-- Take Backup
+
+1. logs backup
+
+-- rename the  cenaf in logs to be cenaf_<span id="currentDate1"></span>
+
+mv /data/mtdata001/logs/cenaf /data/mtdata001/logs/cenaf_<span id="currentDate2"></span>
+
+-- create Empty directory for cenaf
+
+mkdir -m 777 /data/mtdata001/logs/cenaf
+
+2. create directory for CENAF backup with permission
+
+mkdir -m 777 /data/mt/apps/cenaf_backup_<span id="currentDate3"></span>
+ 
+3. copy folders and subfolders to backup folder 
+
+cp -rp /data/mt/apps/cenaf/* /data/mt/apps/cenaf_backup_<span id="currentDate4"></span>
+
+-- check the backups ok
+
+<hr>
+
+to un tar files
+
+1. make sure the cenaf_tar_deployment at /mt/apps/cenaf
+
+2. reomve the deployment,source and java 
+
+3. create the directoies ( deployment,source and java) at /mt/apps/cenaf  -- You must be the owner of directories 
+
+mkdir -m 777 /data/mt/apps/cenaf/source
+mkdir -m 777 /data/mt/apps/cenaf/deployment
+mkdir -m 777 /data/mt/apps/cenaf/java
+
+4. switch to cenaf directory
+
+cd /mt/apps/cenaf
+ 
+./cenaf_tar_deployment.sh cenaf_<span id="lastFive1"></span>.tar
+
+<hr>
+
+comparing Batch7 with Git Verification
+
+
+1. create directory to compare for batch7
+
+mkdir -m 777 /data/mt/apps/cenaf/compare/batch7_<span id="currentDate5"></span>
+
+2. copy (source,deployment and java) folders to compare batch7 folder 
+
+cp -rp /data/mt/apps/cenaf/source     /data/mt/apps/cenaf/compare/batch7_<span id="currentDate6"></span>
+cp -rp /data/mt/apps/cenaf/deployment /data/mt/apps/cenaf/compare/batch7_<span id="currentDate7"></span>
+cp -rp /data/mt/apps/cenaf/java       /data/mt/apps/cenaf/compare/batch7_<span id="currentDate8"></span>
+
+3. copy files out of CENAF to compare folder 
+
+cp /data/mt/apps/APUTILS/data_maintenance/deployment/mntnc_config_cenaf_dmls.sql /data/mt/apps/cenaf/compare/batch7_<span id="currentDate9"></span>
+
+4. create directory to compare for Git Verification
+
+mkdir -m 777 /data/mt/apps/cenaf/compare/gitVerification_<span id="currentDate10"></span>
+
+5. copy (source,deployment and java) from gitlab to gitVerification_<span id="currentDate11"></span> directory 
+
+
+get the following folders from gitlab cenaf verification 
+
+ - source
+ - deployment
+ - java
+ 
+ to gitVerification_<span id="currentDate14"></span>
+
+6. download the following files from gitlab verification branch from APUTILS data_maintenance 
+
+  mntnc_config_cenaf_dmls.sql 
+
+7. do the comparison as the following command
+
+cd /data/mt/apps/cenaf/compare
+
+./directory_compare.sh /data/mt/apps/cenaf/compare/batch7_<span id="currentDate12"></span> /data/mt/apps/cenaf/compare/gitVerification_<span id="currentDate13"></span>
+
+</pre>
+	</pre>
+    </div>
+	
+    <button class="collapsible">2. APV TAR VALIDATION</button>
+        <div id="content-apv_tar_v" class="content">
+        <button class="copy-btn" onclick="copyContent('content-apv_tar_v')">Copy</button>
+		<hr>
+	<pre>
+	
+<pre>
+
+-- Take Backup
+
+1. logs backup
+
+-- rename the  cenaf in logs to be address_pdb_<span id="currentDate15"></span>
+
+mv /data/mtdata001/logs/address_pdb /data/mtdata001/logs/address_pdb_<span id="currentDate16"></span>
+
+-- create Empty directory for log address_pdb
+
+mkdir -m 777 /data/mtdata001/logs/address_pdb
+
+-- create cleanup directory in address_pdb for cleanup log files
+
+mkdir -m 777 /data/mtdata001/logs/address_pdb/cleanup
+
+2. create directory for address_pdb backup with permission
+
+mkdir -m 777 /data/mt/apps/address_pdb_<span id="currentDate17"></span>
+ 
+3. copy folders and subfolders to backup folder 
+
+cp -rp /data/mt/apps/address_pdb/* /data/mt/apps/address_pdb_<span id="currentDate18"></span>
+
+cp -rp /data/mt/apps/GEO_TALLIES/mafxtls/src/create_mafxtls_appschema_tables.sql /data/mt/apps/address_pdb_<span id="currentDate19"></span>
+
+cp -rp /data/mt/apps/APUTILS/data_maintenance/deployment/mntnc_config_apv_dmls.sql /data/mt/apps/address_pdb_<span id="currentDate20"></span>
+
+
+-- check the backups ok
+
+<hr>
+
+-- Un Taring
+
+-- reomve the following directories
+
+rm -rf /dtat/mt/apps/address_pdb/source
+rm -rf /data/mt/apps/address_pdb/scripts
+rm -rf /data/mt/apps/address_pdb/deployment
+
+-- reomve the following scripts
+rm -f /data/mt/apps/GEO_TALLIES/mafxtls/src/create_mafxtls_appschema_tables.sql
+
+rm -f /data/mt/apps/APUTILS/data_maintenance/deployment/mntnc_config_apv_dmls.sql
+
+-- make directories , to be you are the owner
+
+mkdir -m 777 /data/mt/apps/address_pdb/source
+mkdir -m 777 /data/mt/apps/address_pdb/scripts
+mkdir -m 777 /data/mt/apps/address_pdb/deployment
+
+
+-- run tar_deployment to un-taring
+  cd /mt/apps/address_pdb
+  ./address_pdb_tar_deployment.sh pdmaf_view_<span id="lastFiveAP1"></span>.tar
+
+--  Check last tar log file as the following
+      cd /data/mtdate001/logs/address_pdb
+      ls -lrt *tar*.log  
+	  
+<hr>
+
+-- Comparing batch 7 with gitlab
+
+-- create directory to compare for gitVerification_<span id="currentDate21"></span>
+
+mkdir -m 777 /data/mt/apps/address_pdb/compare/gitVerification_<span id="currentDate22"></span>
+
+
+-- copy (source,deployment and scripts) folders to gitVerification_<span id="currentDate23"></span> folder 
+
+download from verification address_pdb 
+
+- source
+- deployment
+- scripts
+
+and put them in 
+
+/data/mt/apps/address_pdb/compare/gitVerification_<span id="currentDate24"></span>
+
+
+--  files out of address_pdb in verification branch to compare folder 
+
+get from gitlab address_pdb->Address Extract Products ->APUTLS ->data_maintenance in deployment you will found
+-  mntnc_config_apv_dmls.sql
+
+get from gitlab address_pdb->Address Extract Products -> GEO_Tallies -> mafx_tallies in deployment should download
+
+- create_mafxtls_appschema_tables.sql
+
+transfer then to the 
+
+/data/mt/apps/address_pdb/compare/gitVerification_<span id="currentDate25"></span>
+
+<hr>
+
+--compare with Dev
+
+-- create directory to compare for batch7
+
+mkdir -m 777 /data/mt/apps/address_pdb/compare/batch7_<span id="currentDate26"></span>
+
+
+-- copy (source,deployment and scripts) folders to batch7_<span id="currentDate27"></span> folder 
+
+cp -rp  /data/mt/apps/address_pdb/source     /data/mt/apps/address_pdb/compare/batch7_<span id="currentDate28"></span>
+cp -rp  /data/mt/apps/address_pdb/deployment /data/mt/apps/address_pdb/compare/batch7_<span id="currentDate29"></span>
+cp -rp  /data/mt/apps/address_pdb/scripts    /data/mt/apps/address_pdb/compare/batch7_<span id="currentDate30"></span>
+
+
+-- copy files out of address_pdb batch7_<span id="currentDate31"></span> to compare folder 
+
+cp -rp /data/mt/apps/GEO_TALLIES/mafxtls/src/create_mafxtls_appschema_tables.sql  /data/mt/apps/address_pdb/compare/batch7_<span id="currentDate32"></span>
+
+cp -rp /data/mt/apps/APUTILS/data_maintenance/deployment/mntnc_config_apv_dmls.sql /data/mt/apps/address_pdb/compare/batch7_<span id="currentDate33"></span>
+
+
+
+-- do the comparison as the following command  between batch7 and verification
+   
+   cd /data/mt/apps/address_pdb/compare
+   
+   ./directory_compare.sh /data/mt/apps/address_pdb/compare/batch7_<span id="currentDate35"></span>  /data/mt/apps/address_pdb/compare/gitVerification_<span id="currentDate34"></span>
+
+
+if you have issue check about the transfering  type of file and do below to be sure the file type mode correct and to correct it by below command.
+
+find /data/mt/apps/address_pdb/compare/batch7_<span id="currentDate36"></span> -not -type d -exec file "{}" ";" | grep CRLF | cut -d":" -f1 | xargs -r dos2unix
+find /data/mt/apps/address_pdb/compare/gitVerification_<span id="currentDate37"></span> -not -type d -exec file "{}" ";" | grep CRLF | cut -d":" -f1 | xargs -r dos2unix
+
+</pre>
+
+
+	</pre>
+    </div>
+
+
+</div>
+
+<script>
+
+const version = "1.0.0";
+document.getElementById("versionNumber").textContent = version;
+		
+function filterDbInstance() {
+        const testIDInput = document.getElementById('currentTestID').value.toUpperCase();
+        const dbInstanceSelect = document.getElementById('dbInstance');
+
+        
+        const allOptions = [
+            { value: "", text: "--Select DB_INSTANCE--" },
+            { value: "DEVBNCH", text: "DEVBNCH" },
+            { value: "TESTBNCH", text: "TESTBNCH" },
+            { value: "PRODBNCH", text: "PRODBNCH" },
+            { value: "CQRBNCH", text: "CQRBNCH" },
+            { value: "TESTCQR", text: "TESTCQR" }
+        ];
+
+        
+        dbInstanceSelect.innerHTML = "";
+
+        
+        if (testIDInput.includes('SC')) {
+           
+            dbInstanceSelect.add(new Option("CQRBNCH", "CQRBNCH"));
+            dbInstanceSelect.add(new Option("TESTCQR", "TESTCQR"));
+        } else {
+            
+            allOptions.forEach(option => {
+                dbInstanceSelect.add(new Option(option.text, option.value));
+            });
+        }
+    }
+
+ function submitForm() {
+        
+        const currentTestID = ensureRT(document.getElementById('currentTestID').value.toUpperCase());
+        const previousTestID = ensureRT(document.getElementById('previousTestID').value.toUpperCase());
+        const dbInstance = document.getElementById('dbInstance').value.toUpperCase();
+		const dbInstanceSelect = document.getElementById('dbInstance');
+
+    
+		
+
+const testIndex = currentTestID.indexOf("TEST");
+let firstNumberAfterTest = "";
+if (testIndex !== -1) {
+    for (let i = testIndex + 4; i < currentTestID.length; i++) {
+        if (!isNaN(currentTestID[i]) && currentTestID[i] !== " ") {
+            firstNumberAfterTest += currentTestID[i];
+        } else {
+            break;
+        }
+    }
+}
+
+const yearNumber = parseInt(firstNumberAfterTest);		
+	
+		const lastFive = currentTestID.slice(-5).toLowerCase();
+
+        
+        const spanIds = ["lastFive1", "lastFive2"];
+
+        
+        spanIds.forEach(id => {
+            const elements = document.getElementById(id);
+            if (elements) {
+                elements.textContent = lastFive;
+            }
+        });
+		
+        if (!currentTestID.includes("SC"))
+		{
+		    
+            
+            const preElement = document.getElementById("retsurvPreContent");
+            preElement.textContent = `
+             Regular Cycle does not have a RetSurvLinkage ....
+            `;
+			
+		}
+		
+		const lastFiveAP = currentTestID.slice(-5).toUpperCase();
+
+       
+        const spanIdsAP = ["lastFiveAP1", "lastFiveAP2"];
+
+       
+        spanIdsAP.forEach(id => {
+            const elementsAP = document.getElementById(id);
+            if (elementsAP) {
+                elementsAP.textContent = lastFiveAP;
+            }
+        });	
+		
+      if (!currentTestID || !previousTestID || !dbInstance) 
+    	  {
+        alert("Please fill out all fields before submitting.");
+		return false;
+		  }
+		  else
+		  {
+		  
+     
+        document.getElementById("testForm").style.display = "none";
+
+       
+        document.getElementById("collapsibleSections").style.display = "block";
+		document.getElementById("collapsibleSections2").style.display = "block";
+		
+        const numInstances = 500; 
+        for (let i = 1; i <= numInstances; i++) {
+            const currentTestIDPlaceholder = document.getElementById(`currentTestIDValue${i}`);
+            if (currentTestIDPlaceholder) {
+                currentTestIDPlaceholder.innerText = currentTestID;
+            }
+			
+			const previousTestIDPlaceholder = document.getElementById(`previousTestIDValue${i}`);
+            if (previousTestIDPlaceholder) {
+                previousTestIDPlaceholder.innerText = previousTestID;
+            }
+			
+			const dbInstancePlaceholder = document.getElementById(`dbInstanceValue${i}`);
+            if (dbInstancePlaceholder) {
+                dbInstancePlaceholder.innerText = dbInstance;
+            }
+        }
+		
+			var modifiedTestID = currentTestID.replace(/RT/g, '');
+
+    document.getElementById('currentTestIDValue61').textContent = modifiedTestID;
+	document.getElementById('currentTestIDValue62').textContent = modifiedTestID;
+	document.getElementById('currentTestIDValue63').textContent = modifiedTestID;
+	document.getElementById('currentTestIDValue64').textContent = modifiedTestID;
+	document.getElementById('currentTestIDValue65').textContent = modifiedTestID;
+	document.getElementById('currentTestIDValue66').textContent = modifiedTestID;
+	document.getElementById('currentTestIDValue67').textContent = modifiedTestID;
+	document.getElementById('currentTestIDValue68').textContent = modifiedTestID;
+	document.getElementById('currentTestIDValue69').textContent = modifiedTestID;
+	document.getElementById('currentTestIDValue70').textContent = modifiedTestID;
+	document.getElementById('currentTestIDValue86').textContent = modifiedTestID;
+	
+	var modifiedPRVTestID = previousTestID.replace(/RT/g, '');
+	document.getElementById('previousTestIDValue21').textContent = modifiedPRVTestID;
+	document.getElementById('previousTestIDValue22').textContent = modifiedPRVTestID;
+	
+	const lengthOfYearNumber5 = firstNumberAfterTest.length;
+    if (lengthOfYearNumber5 === 2)
+	{
+    document.getElementById("tabblockvintage1").innerText = 30+ yearNumber;
+    document.getElementById("tabblockvintage2").innerText = 30+ yearNumber;
+	}
+	else
+	{
+	const spYear1 = parseInt(currentTestID.substring(6,8));
+	document.getElementById("tabblockvintage1").innerText = 18+ spYear1;
+    document.getElementById("tabblockvintage2").innerText = 18+ spYear1;
+	}
+		 
+		    const rtIndex = currentTestID.indexOf("_RT");
+			const result = currentTestID.substring(rtIndex + 3);
+
+ const lengthOfYearNumber4 = firstNumberAfterTest.length;
+      if (lengthOfYearNumber4 === 2)
+	  {
+	const numMAFX = 200; 
+    const elMafx = result + "_MAFX"; 
+    for (let i = 1; i <= numMAFX; i++) {
+        const schemaResultValueMAFXPlaceholder = document.getElementById(`schemaResultValueMAFX${i}`);
+        if (schemaResultValueMAFXPlaceholder) {
+            schemaResultValueMAFXPlaceholder.innerText = elMafx;
+        }
+    }
+	}
+	else
+	{
+	const numMAFX2 = 200; 
+    const elMafx2 = "SC"+firstNumberAfterTest+"_MAFX"; 
+
+    for (let i = 1; i <= numMAFX2; i++) {
+        const schemaResultValueMAFXPlaceholder2 = document.getElementById(`schemaResultValueMAFX${i}`);
+        if (schemaResultValueMAFXPlaceholder2) {
+            schemaResultValueMAFXPlaceholder2.innerText = elMafx2;
+        }
+    }
+	}
+	
+	
+const rtIndex2 = currentTestID.indexOf("_RT");
+let lastThreeChars = "";
+if (rtIndex2 !== -1) 
+{
+    lastThreeChars = currentTestID.substring(rtIndex2 + 3, rtIndex2 + 6).slice(-3);
+}
+
+
+
+if (lastThreeChars === 'ACS') 
+{
+    document.getElementById("dsfResultUpper").innerText = "DSFSPR" + yearNumber;
+    document.getElementById("dsfResultUpper1").innerText = "DSFSPR" + yearNumber;
+    document.getElementById("dsfResultUpper2").innerText = "DSFSPR" + yearNumber;
+    document.getElementById("dsfResultLower").innerText = "dsfspr" + yearNumber;
+    document.getElementById("dsfResultLower1").innerText = "dsfspr" + yearNumber;
+    document.getElementById("dsfResultLower2").innerText = "dsfspr" + yearNumber;
+    document.getElementById("dsfResultLower3").innerText = "dsfspr" + yearNumber;
+    document.getElementById("dsfResultLower4").innerText = "dsfspr" + yearNumber;
+    document.getElementById("curentYearResult").innerText = yearNumber;
+    document.getElementById("curentYearMResult").innerText = yearNumber-1;
+    document.getElementById("curentYearM1Result").innerText = yearNumber - 1;
+    document.getElementById("curentYearM2Result").innerText = yearNumber -2;
+	document.getElementById("dsfResultUpper11").innerText = "DSFSPR" + yearNumber;
+	document.getElementById("dsfResultUpper12").innerText = "DSFSPR" + yearNumber;
+	document.getElementById("dsfResultUpper13").innerText = "DSFSPR" + yearNumber;
+	document.getElementById("dsfResultUpper14").innerText = "DSFSPR" + yearNumber;
+	document.getElementById("dsfResultUpper15").innerText = "DSFSPR" + yearNumber;
+	document.getElementById("dsfResultUpper16").innerText = "DSFSPR" + yearNumber;
+	document.getElementById("dsfResultUpper17").innerText = "DSFSPR" + yearNumber;
+	document.getElementById("dsfResultUpper18").innerText = "DSFSPR" + yearNumber;
+	
+	
+} else {
+
+   const lengthOfYearNumber = firstNumberAfterTest.length;
+   if (lengthOfYearNumber === 2)
+   {
+    document.getElementById("dsfResultUpper").innerText = "DSFFAL" + yearNumber;
+    document.getElementById("dsfResultUpper1").innerText = "DSFFAL" + yearNumber;
+    document.getElementById("dsfResultUpper2").innerText = "DSFFAL" + yearNumber;
+    document.getElementById("dsfResultLower").innerText = "dsffal" + yearNumber;
+    document.getElementById("dsfResultLower1").innerText = "dsffal" + yearNumber;
+    document.getElementById("dsfResultLower2").innerText = "dsffal" + yearNumber;
+    document.getElementById("dsfResultLower3").innerText = "dsffal" + yearNumber;
+    document.getElementById("dsfResultLower4").innerText = "dsffal" + yearNumber;
+    document.getElementById("curentYearResult").innerText = yearNumber;
+    document.getElementById("curentYearMResult").innerText = yearNumber-1;
+    document.getElementById("curentYearM1Result").innerText = yearNumber - 1;
+    document.getElementById("curentYearM2Result").innerText = yearNumber - 2;
+	document.getElementById("dsfResultUpper11").innerText = "DSFFAL" + yearNumber;
+	document.getElementById("dsfResultUpper12").innerText = "DSFFAL" + yearNumber;
+	document.getElementById("dsfResultUpper13").innerText = "DSFFAL" + yearNumber;
+	document.getElementById("dsfResultUpper14").innerText = "DSFFAL" + yearNumber;
+	document.getElementById("dsfResultUpper15").innerText = "DSFFAL" + yearNumber;
+	document.getElementById("dsfResultUpper16").innerText = "DSFFAL" + yearNumber;
+	document.getElementById("dsfResultUpper17").innerText = "DSFFAL" + yearNumber;
+	document.getElementById("dsfResultUpper18").innerText = "DSFFAL" + yearNumber;
+	}
+	else
+	{
+	 const spYear = parseInt(currentTestID.substring(6,8));
+	 const spMonth = parseInt(currentTestID.substring(8,10));
+    
+	if (spMonth >= 09)
+	{
+	document.getElementById("dsfResultUpper").innerText = "DSFFAL" + spYear;
+    document.getElementById("dsfResultUpper1").innerText = "DSFFAL" + spYear;
+    document.getElementById("dsfResultUpper2").innerText = "DSFFAL" + spYear;
+    document.getElementById("dsfResultLower").innerText = "dsffal" + spYear;
+    document.getElementById("dsfResultLower1").innerText = "dsffal" + spYear;
+    document.getElementById("dsfResultLower2").innerText = "dsffal" + spYear;
+    document.getElementById("dsfResultLower3").innerText = "dsffal" + spYear;
+    document.getElementById("dsfResultLower4").innerText = "dsffal" + spYear;
+    document.getElementById("curentYearResult").innerText = spYear;
+    document.getElementById("curentYearMResult").innerText = spYear-1;
+    document.getElementById("curentYearM1Result").innerText = spYear - 1;
+    document.getElementById("curentYearM2Result").innerText = spYear - 2;
+	document.getElementById("dsfResultUpper11").innerText = "DSFFAL" + spYear;
+	document.getElementById("dsfResultUpper12").innerText = "DSFFAL" + spYear;
+	document.getElementById("dsfResultUpper13").innerText = "DSFFAL" + spYear;
+	document.getElementById("dsfResultUpper14").innerText = "DSFFAL" + spYear;
+	document.getElementById("dsfResultUpper15").innerText = "DSFFAL" + spYear;
+	document.getElementById("dsfResultUpper16").innerText = "DSFFAL" + spYear;
+	document.getElementById("dsfResultUpper17").innerText = "DSFFAL" + spYear;
+	document.getElementById("dsfResultUpper18").innerText = "DSFFAL" + spYear;
+	}
+	else
+	{
+	document.getElementById("dsfResultUpper").innerText = "DSFSPR" + spYear;
+    document.getElementById("dsfResultUpper1").innerText = "DSFSPR" + spYear;
+    document.getElementById("dsfResultUpper2").innerText = "DSFSPR" + spYear;
+    document.getElementById("dsfResultLower").innerText = "dsfspr" + spYear;
+    document.getElementById("dsfResultLower1").innerText = "dsfspr" + spYear;
+    document.getElementById("dsfResultLower2").innerText = "dsfspr" + spYear;
+    document.getElementById("dsfResultLower3").innerText = "dsfspr" + spYear;
+    document.getElementById("dsfResultLower4").innerText = "dsfspr" + spYear;
+    document.getElementById("curentYearResult").innerText = spYear;
+    document.getElementById("curentYearMResult").innerText = spYear-1;
+    document.getElementById("curentYearM1Result").innerText = spYear - 1;
+    document.getElementById("curentYearM2Result").innerText = spYear - 2;
+	document.getElementById("dsfResultUpper11").innerText = "DSFSPR" + spYear;
+	document.getElementById("dsfResultUpper12").innerText = "DSFSPR" + spYear;
+	document.getElementById("dsfResultUpper13").innerText = "DSFSPR" + spYear;
+	document.getElementById("dsfResultUpper14").innerText = "DSFSPR" + spYear;
+	document.getElementById("dsfResultUpper15").innerText = "DSFSPR" + spYear;
+	document.getElementById("dsfResultUpper16").innerText = "DSFSPR" + spYear;
+	document.getElementById("dsfResultUpper17").innerText = "DSFSPR" + spYear;
+	document.getElementById("dsfResultUpper18").innerText = "DSFSPR" + spYear;
+	}
+	
+	}
+	
+}
+	
+if (dbInstance === 'DEVBNCH') {
+
+        document.getElementById("schemaResultValue").innerText = result + "_TEST";
+        document.getElementById("schemaResultValue2").innerText = result + "_TEST";
+		document.getElementById("schemaResultValue4").innerText = result + "_TEST";
+		document.getElementById("schemaResultValue5").innerText = result + "_TEST";
+		document.getElementById("schemaResultValue6").innerText = result + "_TEST";
+		
+		document.getElementById("scYearN").innerText = "";
+
+		document.getElementById("scYearN1").innerText = "";
+		document.getElementById("scYearN2").innerText = "";
+
+
+} else {
+
+    
+    if (rtIndex !== -1) {
+
+
+    const lengthOfYearNumber2 = firstNumberAfterTest.length;
+      if (lengthOfYearNumber2 === 2)
+	    {
+        document.getElementById("schemaResultValue").innerText = result;
+        document.getElementById("schemaResultValue2").innerText = result;
+		document.getElementById("schemaResultValue4").innerText = result;
+		document.getElementById("schemaResultValue5").innerText = result;
+		document.getElementById("schemaResultValue6").innerText = result;
+		
+		document.getElementById("scYearN").innerText = "";
+		
+		document.getElementById("scYearN1").innerText = "";
+		document.getElementById("scYearN2").innerText = "";
+		}
+		else
+		{
+		
+		document.getElementById("schemaResultValue").innerText = "SC"+firstNumberAfterTest;
+        document.getElementById("schemaResultValue2").innerText = "SC"+firstNumberAfterTest;
+		document.getElementById("schemaResultValue4").innerText = "SC"+firstNumberAfterTest;
+		document.getElementById("schemaResultValue5").innerText = "SC"+firstNumberAfterTest;
+		document.getElementById("schemaResultValue6").innerText = "SC"+firstNumberAfterTest;
+		
+		document.getElementById("scYearN").innerText = firstNumberAfterTest;
+		
+		document.getElementById("scYearN1").innerText = firstNumberAfterTest;
+		document.getElementById("scYearN2").innerText = firstNumberAfterTest;
+		}
+    } 
+	
+
+
+}
+
+	
+	return true;
+	}		
+    }
+	
+function ensureRT(testID) {
+    const rtPattern = /_RT/; 
+    if (!rtPattern.test(testID)) {
+        const firstUnderscoreIndex = testID.indexOf('_');
+        if (firstUnderscoreIndex !== -1) {
+            return testID.slice(0, firstUnderscoreIndex + 1) + "RT" + testID.slice(firstUnderscoreIndex + 1);
+        }
+    }
+    return testID; 
+}
+	
+	
+function getCurrentDate() {
+            const date = new Date();
+            const month = String(date.getMonth() + 1).padStart(2, '0'); 
+            const day = String(date.getDate()).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${month}${day}${year}`;
+        }
+
+        
+        const numDates = 40;
+        const currentDate = getCurrentDate();
+        
+        for (let i = 1; i <= numDates; i++) {
+            const datePlaceholder = document.getElementById(`currentDate${i}`);
+            if (datePlaceholder) {
+                datePlaceholder.textContent = currentDate;
+            }
+        }
+		
+		
+    var coll = document.getElementsByClassName("collapsible");
+    for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        });
+    }
+	
+        
+        function copyContent(contentId) {
+            const content = document.getElementById(contentId).querySelector('pre').textContent; 
+            const textArea = document.createElement("textarea");
+            textArea.value = content; 
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("copy"); 
+
+            
+            document.body.removeChild(textArea);
+
+            alert('Content copied to clipboard!');
+        }
+		
+</script>
+
+</body>
+</html>
